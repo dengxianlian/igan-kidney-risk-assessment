@@ -110,7 +110,8 @@
 
   function formatNumber(value, decimals = 2) {
     if (!Number.isFinite(value)) return "—";
-    return Number(value).toFixed(decimals).replace(/\.?0+$/, "");
+    const fixed = Number(value).toFixed(decimals);
+    return fixed.includes(".") ? fixed.replace(/0+$/, "").replace(/\.$/, "") : fixed;
   }
 
   function logistic(a) {
