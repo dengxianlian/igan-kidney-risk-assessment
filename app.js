@@ -18,7 +18,7 @@
       breadcrumbOne: "临床辅助评估", breadcrumbTwo: "模型计算", sectionHeading: "患者风险工作台", headingIntro: "录入检查结果，查看模型概率、变量贡献与下一步诊疗建议。", formulaLabel: "当前模型", inputTitle: "结果输入", resultTitle: "模型预测结果", liveLabel: "实时更新", probabilityCaption: "预测概率 P", riskLabel: "风险等级", aLabel: "线性预测值 A", modelLabel: "模型",
       inputHint: "连续变量按原始测量值代入；性别为二分类变量。", adviceTitle: "下一步诊疗建议", adviceNote: "模型结果仅作临床辅助评估，不能替代医生诊断。", nomogramTitle: "风险等级列线图", nomogramIntro: "各变量按建模队列观察范围设定标尺；总分与概率使用同一线性预测值映射。", legendCurrent: "当前点位", legendThreshold: "风险阈值", nomogramSource: "标尺来源：对应模型建模队列；变量范围采用观察到的最小值与最大值。",
       explanationTitle: "变量贡献与分布", explanationIntro: "Bar 按模型贡献度排列；Scatter 与 Bar 使用相同项目顺序，展示变量取值对应的线性贡献。", legendCase: "当前病例", legendLow: "低值", legendHigh: "高值", modelInfoTitle: "模型信息与使用边界", disclaimer: "本模型仅作为临床辅助评估工具，用于提示相关疾病或病理类型的可能性，不能作为确诊或排除诊断的唯一依据。疾病确诊仍需结合患者病史、临床表现、实验室及影像学检查，必要时依据肾活检及病理结果明确诊断。",
-      invalid: "请检查输入范围后再查看结果。", filled: "已填", pending: "待检查输入", range: "范围", points: "分", total: "总分", riskProbability: "风险概率", pointsAxis: "POINTS / 分值", scatterAxis: "线性贡献 / Linear contribution", scoreMapping: "总分与概率共用线性预测值映射"
+      invalid: "请填写全部项目，并检查输入范围后再运行模型。", filled: "已填", pending: "待检查输入", runLabel: "运行模型", runHint: "填写全部项目后点击运行模型；结果将在运行后展开。", range: "范围", points: "分", total: "总分", riskProbability: "风险概率", pointsAxis: "POINTS / 分值", scatterAxis: "线性贡献 / Linear contribution", scoreMapping: "总分与概率共用线性预测值映射"
     },
     en: {
       brandSubtitle: "Renal risk assessment workbench", offline: "Offline calculation", export: "Export result", resetTitle: "Reset current inputs", languageLabel: "Switch language",
@@ -27,7 +27,7 @@
       breadcrumbOne: "Clinical support", breadcrumbTwo: "Model calculation", sectionHeading: "Patient risk workbench", headingIntro: "Enter laboratory results to review probability, variable contribution, and next-step advice.", formulaLabel: "Active model", inputTitle: "Result input", resultTitle: "Model output", liveLabel: "Live update", probabilityCaption: "Predicted probability P", riskLabel: "Risk tier", aLabel: "Linear predictor A", modelLabel: "Model",
       inputHint: "Enter continuous variables as measured; sex is binary coded.", adviceTitle: "Next-step clinical advice", adviceNote: "For clinical support only; this model does not replace medical diagnosis.", nomogramTitle: "Risk nomogram", nomogramIntro: "Variable scales use observed modeling-cohort ranges; total points and probability share one linear-predictor mapping.", legendCurrent: "Current value", legendThreshold: "Risk threshold", nomogramSource: "Scale source: the corresponding modeling cohort; observed minimum and maximum values are used.",
       explanationTitle: "Variable contribution & distribution", explanationIntro: "Bars follow the model contribution order; scatter uses the same feature order and shows linear contribution across the value range.", legendCase: "Current case", legendLow: "Low value", legendHigh: "High value", modelInfoTitle: "Model notes & boundaries", disclaimer: "This model is a clinical support tool for estimating disease or pathology likelihood. It must not be used as the sole basis for diagnosis or exclusion. Final assessment should integrate history, examination, laboratory and imaging findings, and kidney biopsy when indicated.",
-      invalid: "Check the input range before reviewing the result.", filled: "Filled", pending: "Check inputs", range: "Range", points: "pts", total: "Total points", riskProbability: "Risk probability", pointsAxis: "POINTS / 分值", scatterAxis: "线性贡献 / Linear contribution", scoreMapping: "Total points and probability share the linear-predictor mapping"
+      invalid: "Complete all fields and check the input ranges before running the model.", filled: "Filled", pending: "Check inputs", runLabel: "Run model", runHint: "Complete every field, then run the model to reveal the results.", range: "Range", points: "pts", total: "Total points", riskProbability: "Risk probability", pointsAxis: "POINTS / 分值", scatterAxis: "线性贡献 / Linear contribution", scoreMapping: "Total points and probability share the linear-predictor mapping"
     }
   };
 
@@ -99,10 +99,11 @@
   ];
 
   const els = {
-    modelList: document.querySelector("#modelList"), modelCount: document.querySelector("#modelCount"), headingModelChip: document.querySelector("#headingModelChip"), inputForm: document.querySelector("#inputForm"), formulaText: document.querySelector("#formulaText"), completionStatus: document.querySelector("#completionStatus"), validationMessage: document.querySelector("#validationMessage"), probabilityRing: document.querySelector("#probabilityRing"), probabilityValue: document.querySelector("#probabilityValue"), aValue: document.querySelector("#aValue"), modelCode: document.querySelector("#modelCode"), riskTitle: document.querySelector("#riskTitle"), riskInterpretation: document.querySelector("#riskInterpretation"), riskScale: document.querySelector("#riskScale"), adviceCallout: document.querySelector("#adviceCallout"), adviceBody: document.querySelector("#adviceBody"), nomogram: document.querySelector("#nomogram"), nomogramSource: document.querySelector("#nomogramSource"), nomogramTierKey: document.querySelector("#nomogramTierKey"), contributionPlot: document.querySelector("#contributionPlot"), modelInfoContent: document.querySelector("#modelInfoContent")
+    modelList: document.querySelector("#modelList"), modelCount: document.querySelector("#modelCount"), headingModelChip: document.querySelector("#headingModelChip"), inputForm: document.querySelector("#inputForm"), formulaText: document.querySelector("#formulaText"), completionStatus: document.querySelector("#completionStatus"), runLabel: document.querySelector("#runLabel"), runHint: document.querySelector("#runHint"), validationMessage: document.querySelector("#validationMessage"), resultWorkspace: document.querySelector("#resultWorkspace"), probabilityRing: document.querySelector("#probabilityRing"), probabilityValue: document.querySelector("#probabilityValue"), aValue: document.querySelector("#aValue"), modelCode: document.querySelector("#modelCode"), riskTitle: document.querySelector("#riskTitle"), riskInterpretation: document.querySelector("#riskInterpretation"), riskScale: document.querySelector("#riskScale"), adviceCallout: document.querySelector("#adviceCallout"), adviceBody: document.querySelector("#adviceBody"), nomogram: document.querySelector("#nomogram"), nomogramSource: document.querySelector("#nomogramSource"), nomogramTierKey: document.querySelector("#nomogramTierKey"), contributionPlot: document.querySelector("#contributionPlot"), modelInfoContent: document.querySelector("#modelInfoContent")
   };
   let activeModelId = "uBASE";
   let lang = "zh";
+  let hasRun = false;
 
   const t = (key) => I18N[lang][key] ?? key;
   const modelLabel = (model) => lang === "zh" ? model.name : model.nameEn;
@@ -115,7 +116,7 @@
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
   function updateStaticText() {
-    const ids = ["brandSubtitle", "modelCount", "cohortTitle", "privacyTitle", "privacyText", "heroKicker", "pageTitle", "pageIntro", "heroMetaOne", "heroMetaTwo", "heroMetaThree", "breadcrumbOne", "breadcrumbTwo", "sectionHeading", "headingIntro", "formulaLabel", "inputTitle", "resultTitle", "liveLabel", "probabilityCaption", "riskLabel", "aLabel", "modelLabel", "inputHint", "adviceTitle", "adviceNote", "nomogramTitle", "nomogramIntro", "legendCurrent", "legendThreshold", "nomogramSource", "explanationTitle", "explanationIntro", "legendCase", "legendLow", "legendHigh", "modelInfoTitle"];
+    const ids = ["brandSubtitle", "modelCount", "cohortTitle", "privacyTitle", "privacyText", "heroKicker", "pageTitle", "pageIntro", "heroMetaOne", "heroMetaTwo", "heroMetaThree", "breadcrumbOne", "breadcrumbTwo", "sectionHeading", "headingIntro", "formulaLabel", "inputTitle", "resultTitle", "liveLabel", "probabilityCaption", "riskLabel", "aLabel", "modelLabel", "inputHint", "runLabel", "runHint", "adviceTitle", "adviceNote", "nomogramTitle", "nomogramIntro", "legendCurrent", "legendThreshold", "nomogramSource", "explanationTitle", "explanationIntro", "legendCase", "legendLow", "legendHigh", "modelInfoTitle"];
     const keyById = { offlineLabel: "offline", exportLabel: "export", disclaimerText: "disclaimer" };
     ids.forEach((id) => { const node = document.querySelector(`#${id}`); if (node) node.textContent = t(id); });
     Object.entries(keyById).forEach(([id, key]) => { const node = document.querySelector(`#${id}`); if (node) node.textContent = t(key); });
@@ -131,25 +132,49 @@
     els.modelList.innerHTML = Object.values(MODEL_DEFS).map((model, index) => `<button class="model-button ${model.id === activeModelId ? "active" : ""}" data-model="${model.id}" type="button" aria-pressed="${model.id === activeModelId}"><span class="model-bullet">0${index + 1}</span><span><strong>${modelLabel(model)}</strong><small>${lang === "zh" ? model.subtitle : model.subtitleEn}</small></span></button>`).join("");
   }
 
-  function renderForm(model) {
-    const values = Object.fromEntries(model.fields.map((field) => [field.key, field.default]));
+  function renderForm(model, initialValues = {}) {
     els.inputForm.innerHTML = model.fields.map((field) => {
-      const input = field.type === "select" ? `<select id="field-${field.key}" name="${field.key}" aria-label="${fieldLabel(field)}">${field.options.map((option) => `<option value="${option.value}" ${String(option.value) === String(field.default) ? "selected" : ""}>${lang === "zh" ? option.label : option.enLabel}</option>`).join("")}</select>` : `<input id="field-${field.key}" name="${field.key}" type="number" inputmode="decimal" value="${field.default}" min="${field.min}" max="${field.max}" step="${field.step || 0.01}" required aria-label="${fieldLabel(field)}" />`;
+      const rawValue = initialValues[field.key] ?? "";
+      const input = field.type === "select" ? `<select id="field-${field.key}" name="${field.key}" aria-label="${fieldLabel(field)}"><option value="" disabled ${rawValue === "" ? "selected" : ""}>${lang === "zh" ? "请选择" : "Select"}</option>${field.options.map((option) => `<option value="${option.value}" ${String(option.value) === String(rawValue) ? "selected" : ""}>${lang === "zh" ? option.label : option.enLabel}</option>`).join("")}</select>` : `<input id="field-${field.key}" name="${field.key}" type="number" inputmode="decimal" value="${rawValue}" min="${field.min}" max="${field.max}" step="${field.step || 0.01}" required aria-label="${fieldLabel(field)}" />`;
       const hint = field.type === "select" ? (lang === "zh" ? "男 = 1 · 女 = 0" : "Male = 1 · Female = 0") : `${t("range")} ${formatNumber(field.min, field.decimals)} – ${formatNumber(field.max, field.decimals)}`;
       return `<div class="field"><div class="field-label"><label for="field-${field.key}">${fieldLabel(field)}<span>${field.symbol}</span></label><span class="field-unit">${fieldUnit(field)}</span></div><div class="field-control">${input}</div><div class="field-hint">${hint}</div></div>`;
     }).join("");
-    els.inputForm.querySelectorAll("input, select").forEach((input) => { input.addEventListener("input", updateResult); input.addEventListener("change", updateResult); });
+    els.inputForm.querySelectorAll("input, select").forEach((input) => { input.addEventListener("input", handleInputChange); input.addEventListener("change", handleInputChange); });
     if (els.formulaText) els.formulaText.textContent = lang === "zh" ? model.formula : model.formulaEn;
     els.headingModelChip.textContent = modelLabel(model);
-    els.modelCode.textContent = modelLabel(model);
-    els.completionStatus.textContent = `${t("filled")} ${model.fields.length} / ${model.fields.length}`;
-    renderModelInfo(model);
-    return values;
+    if (els.modelCode) els.modelCode.textContent = modelLabel(model);
+  }
+
+  function readRawValues(model) {
+    return Object.fromEntries(model.fields.map((field) => [field.key, els.inputForm.elements[field.key]?.value ?? ""]));
+  }
+
+  function updateInputState() {
+    const model = MODEL_DEFS[activeModelId];
+    const rawValues = readRawValues(model);
+    const filled = model.fields.filter((field) => rawValues[field.key] !== "").length;
+    els.completionStatus.textContent = `${t("filled")} ${filled} / ${model.fields.length}`;
+    return { filled, total: model.fields.length };
+  }
+
+  function hideResults() {
+    hasRun = false;
+    if (els.resultWorkspace) els.resultWorkspace.hidden = true;
+  }
+
+  function showResults() {
+    if (els.resultWorkspace) els.resultWorkspace.hidden = false;
+  }
+
+  function handleInputChange() {
+    hideResults();
+    els.validationMessage.textContent = "";
+    updateInputState();
   }
 
   function readValues(model) {
     const values = {}; let valid = true;
-    model.fields.forEach((field) => { const element = els.inputForm.elements[field.key]; const value = Number(element.value); values[field.key] = value; if (!Number.isFinite(value) || value < field.min || value > field.max) valid = false; });
+    model.fields.forEach((field) => { const element = els.inputForm.elements[field.key]; const rawValue = element?.value?.trim() ?? ""; const value = rawValue === "" ? NaN : Number(rawValue); values[field.key] = value; if (!Number.isFinite(value) || value < field.min || value > field.max) valid = false; });
     return { values, valid };
   }
 
@@ -166,7 +191,8 @@
 
   function updateResult() {
     const model = MODEL_DEFS[activeModelId]; const { values, valid } = readValues(model);
-    if (!valid) { els.validationMessage.textContent = t("invalid"); els.completionStatus.textContent = t("pending"); return; }
+    if (!valid) { hideResults(); els.validationMessage.textContent = t("invalid"); updateInputState(); return; }
+    hasRun = true; showResults();
     els.validationMessage.textContent = ""; els.completionStatus.textContent = `${t("filled")} ${model.fields.length} / ${model.fields.length}`;
     const result = calculate(model, values); const tier = getTier(result.p); const label = interpretation(model, tier);
     els.probabilityRing.style.setProperty("--probability", `${result.p * 100}%`); els.probabilityRing.style.background = `conic-gradient(${tier.color} ${result.p * 100}%, #e7eeef 0)`; els.probabilityValue.textContent = `${(result.p * 100).toFixed(2)}%`; els.aValue.textContent = result.a.toFixed(4); els.riskTitle.textContent = lang === "zh" ? tier.name : tier.enName; els.riskTitle.style.color = tier.color; els.riskInterpretation.textContent = label; els.adviceCallout.textContent = `${label}.`; els.adviceCallout.style.borderLeftColor = tier.color; els.adviceCallout.style.color = tier.color === "#d94d51" ? "#913538" : "#48652f"; els.adviceBody.textContent = model.recommendations[tier.key][lang === "zh" ? 0 : 1];
@@ -242,11 +268,11 @@
     els.modelInfoContent.innerHTML = `<dl><dt>${lang === "zh" ? "模型用途" : "Purpose"}</dt><dd>${purpose}</dd><dt>${lang === "zh" ? "输入变量" : "Inputs"}</dt><dd>${names}. ${lang === "zh" ? "连续变量使用真实检查值。" : "Continuous values are entered as measured."}</dd><dt>${lang === "zh" ? "数据来源" : "Data source"}</dt><dd>${source}. ${rangeText}</dd><dt>${lang === "zh" ? "运行方式" : "Runtime"}</dt><dd>${lang === "zh" ? "计算在浏览器端完成，不调用远程接口。" : "All calculations run in the browser without a remote API."}</dd></dl>`;
   }
 
-  function selectModel(modelId) { if (!MODEL_DEFS[modelId]) return; activeModelId = modelId; renderModelList(); renderForm(MODEL_DEFS[activeModelId]); updateResult(); }
+  function selectModel(modelId) { if (!MODEL_DEFS[modelId]) return; activeModelId = modelId; renderModelList(); renderForm(MODEL_DEFS[activeModelId]); hideResults(); els.validationMessage.textContent = ""; updateInputState(); }
   els.modelList.addEventListener("click", (event) => { const button = event.target.closest("[data-model]"); if (button) selectModel(button.dataset.model); });
-  document.querySelector("#languageToggle").addEventListener("click", () => { lang = lang === "zh" ? "en" : "zh"; updateStaticText(); renderModelList(); renderForm(MODEL_DEFS[activeModelId]); updateResult(); });
-  document.querySelector("#resetButton").addEventListener("click", () => { renderForm(MODEL_DEFS[activeModelId]); updateResult(); });
+  document.querySelector("#languageToggle").addEventListener("click", () => { const rawValues = readRawValues(MODEL_DEFS[activeModelId]); const wasRun = hasRun; lang = lang === "zh" ? "en" : "zh"; updateStaticText(); renderModelList(); renderForm(MODEL_DEFS[activeModelId], rawValues); updateInputState(); if (wasRun) updateResult(); });
+  document.querySelector("#resetButton").addEventListener("click", () => { renderForm(MODEL_DEFS[activeModelId]); hideResults(); els.validationMessage.textContent = ""; updateInputState(); });
   document.querySelector("#printButton").addEventListener("click", () => window.print());
-  els.inputForm.addEventListener("submit", (event) => event.preventDefault());
-  updateStaticText(); renderModelList(); renderForm(MODEL_DEFS[activeModelId]); updateResult();
+  els.inputForm.addEventListener("submit", (event) => { event.preventDefault(); updateResult(); });
+  updateStaticText(); renderModelList(); renderForm(MODEL_DEFS[activeModelId]); hideResults(); updateInputState();
 })();
