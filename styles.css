@@ -83,15 +83,29 @@ button { cursor: pointer; }
 .hero-meta { display: flex; gap: 24px; margin-top: 25px; }
 .hero-meta-item { display: inline-flex; align-items: center; gap: 8px; color: #d9efee; font-size: 10px; }
 .hero-meta-item b { width: 21px; height: 21px; display: grid; place-items: center; color: var(--teal-dark); background: var(--cyan); border-radius: 50%; font-size: 9px; }
-.kidney-illustration { width: 245px; height: 190px; flex: none; position: relative; opacity: .9; margin-right: 35px; }
-.kidney { width: 68px; height: 103px; position: absolute; top: 30px; background: rgba(120, 211, 205, .18); border: 2px solid rgba(140, 230, 222, .58); border-radius: 58% 42% 60% 42%; box-shadow: inset -10px -4px 0 rgba(7, 64, 67, .18); }
-.kidney-left { left: 44px; transform: rotate(25deg); }
-.kidney-right { right: 44px; transform: rotate(-25deg); }
-.ureter { width: 5px; height: 59px; position: absolute; top: 118px; border-radius: 10px; background: rgba(130, 222, 216, .56); }
-.ureter-left { left: 94px; transform: rotate(12deg); }
-.ureter-right { right: 94px; transform: rotate(-12deg); }
-.kidney-pulse { position: absolute; left: 103px; top: 101px; width: 38px; height: 26px; border-top: 2px solid var(--cyan); border-right: 2px solid var(--cyan); transform: skew(-23deg) rotate(-14deg); opacity: .95; }
-.kidney-pulse::after { content: ""; position: absolute; left: 17px; top: -7px; width: 10px; height: 10px; border: 2px solid var(--cyan); border-radius: 50%; }
+.kidney-illustration { width: 315px; height: 205px; flex: none; position: relative; opacity: .95; margin-right: 10px; isolation: isolate; }
+.digital-grid { position: absolute; inset: 14px 0 8px; opacity: .6; background-image: radial-gradient(circle, rgba(143, 231, 225, .52) 0 1px, transparent 1.5px); background-size: 17px 17px; mask-image: linear-gradient(90deg, transparent, #000 19%, #000 81%, transparent); }
+.digital-kidney { width: 94px; height: 133px; position: absolute; top: 24px; border: 3px solid rgba(118, 224, 216, .72); border-radius: 63% 42% 58% 43%; background: rgba(56, 176, 177, .08); box-shadow: 0 0 0 1px rgba(83, 198, 194, .18), 0 0 25px rgba(67, 213, 205, .17), inset -14px -8px 0 rgba(4, 68, 72, .2); }
+.digital-kidney::before { content: ""; position: absolute; inset: 8px 13px 9px 9px; border: 1px solid rgba(127, 226, 219, .34); border-radius: inherit; }
+.digital-kidney::after { content: ""; position: absolute; width: 41px; height: 42px; top: 43px; background: var(--teal-dark); border-radius: 50%; filter: blur(.2px); }
+.digital-kidney span { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 0 4px rgba(70, 205, 208, .12), 0 0 12px rgba(70, 205, 208, .9); }
+.digital-kidney-left { left: 35px; transform: rotate(25deg); }
+.digital-kidney-left::after { right: -13px; }
+.digital-kidney-left span { right: 9px; top: 20px; }
+.digital-kidney-right { right: 35px; transform: rotate(-25deg); }
+.digital-kidney-right::after { left: -13px; }
+.digital-kidney-right span { left: 9px; top: 20px; }
+.digital-marker { position: absolute; left: 50%; top: 88px; width: 72px; height: 72px; transform: translate(-50%, -50%); display: grid; place-items: center; color: var(--cyan); }
+.marker-ring { position: absolute; inset: 7px; border: 1px solid rgba(103, 226, 219, .72); border-radius: 50%; box-shadow: 0 0 0 7px rgba(70, 205, 208, .06), 0 0 21px rgba(70, 205, 208, .26); }
+.marker-ring::before, .marker-ring::after { content: ""; position: absolute; background: var(--cyan); opacity: .76; }
+.marker-ring::before { width: 1px; height: 86px; left: 50%; top: -15px; }
+.marker-ring::after { width: 86px; height: 1px; top: 50%; left: -15px; }
+.marker-core { position: relative; z-index: 1; padding: 4px 5px; color: #baf6f0; background: rgba(6, 63, 67, .9); border: 1px solid rgba(111, 224, 217, .65); border-radius: 4px; font: 800 10px/1 "Cascadia Code", Consolas, monospace; letter-spacing: .1em; }
+.marker-scan { position: absolute; left: -10px; right: -10px; top: 23px; height: 1px; background: linear-gradient(90deg, transparent, var(--cyan), transparent); opacity: .65; animation: markerScan 3.8s ease-in-out infinite; }
+.digital-label { position: absolute; color: rgba(151, 234, 227, .68); font: 700 8px/1 "Cascadia Code", Consolas, monospace; letter-spacing: .14em; }
+.label-top { top: 10px; right: 8px; }
+.label-bottom { bottom: 11px; left: 25px; }
+@keyframes markerScan { 0%, 100% { transform: translateY(-13px); opacity: .18; } 50% { transform: translateY(14px); opacity: .78; } }
 .page-heading { padding: 26px 3px 18px; }
 .breadcrumb { color: var(--muted); font-size: 10px; margin-bottom: 9px; }
 .breadcrumb span { padding: 0 6px; color: #b4c3c7; }
@@ -120,9 +134,9 @@ button { cursor: pointer; }
 .field-control input:focus, .field-control select:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(19, 163, 158, .12); }
 .field-control input:invalid { border-color: #e1a7a5; }
 .field-hint { margin-top: 5px; color: #9aabb1; font-size: 9px; }
-.input-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 15px; color: var(--muted); font-size: 9px; }
-.required-dot { color: var(--coral); font-weight: 850; margin-right: 3px; }
-.validation-message { color: var(--coral); text-align: right; }
+.input-validation { min-height: 0; margin-top: 6px; font-size: 9px; }
+.validation-message { color: var(--coral); }
+.validation-message:empty { display: none; }
 
 .results-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 18px; margin-top: 18px; }
 .result-panel, .advice-panel { padding: 22px 24px 18px; }
@@ -156,11 +170,14 @@ button { cursor: pointer; }
 .legend-dot { width: 8px; height: 8px; display: inline-block; margin-left: 10px; border-radius: 50%; }.legend-dot:first-child { margin-left: 0; }.legend-dot.teal { background: var(--teal); }.legend-dot.coral { background: var(--coral); }.legend-dot.blue { background: var(--blue); }
 .nomogram-scroll, .explanation-scroll { overflow-x: auto; margin: 17px -4px 0; padding: 0 4px 3px; }
 #nomogram { width: 100%; min-width: 780px; height: auto; display: block; }.nomogram-source { margin-top: 10px; padding-top: 10px; color: var(--muted); border-top: 1px solid var(--line); font-size: 9px; }
+.nomogram-tier-key { display: flex; flex-wrap: wrap; gap: 7px 15px; margin-top: 9px; color: var(--muted); font-size: 9px; }
+.nomogram-tier-key span { display: inline-flex; align-items: center; gap: 5px; }
+.nomogram-tier-key i { width: 18px; height: 7px; display: inline-block; border-radius: 2px; }
 
 .explanation-panel { margin-top: 18px; padding: 22px 24px 17px; }.explanation-header { align-items: end; }.explanation-header h2 { font-size: 17px; }.explanation-scroll { margin-top: 16px; }.explanation-scroll svg { width: 100%; min-width: 820px; height: auto; display: block; }
 .model-info-panel { margin-top: 18px; padding: 22px 24px; }.model-info-content { margin-top: 16px; color: var(--ink-soft); font-size: 10px; line-height: 1.65; }.model-info-content dl { display: grid; grid-template-columns: 76px 1fr; gap: 8px 12px; margin: 0; }.model-info-content dt { color: var(--muted); }.model-info-content dd { margin: 0; }.model-info-content .model-formula { margin-top: 13px; padding: 10px 11px; color: #355967; background: #f2f8f7; border-radius: 5px; font-family: "Cascadia Code", Consolas, monospace; font-size: 9px; line-height: 1.65; overflow-wrap: anywhere; }
 .disclaimer { display: flex; align-items: flex-start; gap: 9px; margin-top: 18px; padding: 12px 14px; color: #7d6634; background: #fff8e8; border: 1px solid #f0dfb0; border-radius: 7px; font-size: 9px; line-height: 1.65; }.disclaimer-icon { width: 15px; height: 15px; display: grid; place-items: center; flex: none; margin-top: 1px; color: #fff; background: #d39b27; border-radius: 50%; font-size: 9px; font-weight: 850; }
 
 @media (max-width: 1050px) { .sidebar { width: 210px; flex-basis: 210px; }.main-content { padding: 24px 25px 38px; }.input-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }.kidney-illustration { margin-right: 0; transform: scale(.88); transform-origin: right center; } }
-@media (max-width: 760px) { .topbar { height: 62px; padding: 0 15px; }.brand-subtitle, .offline-pill { display: none; }.export-button { padding: 8px 10px; }.workspace { display: block; }.sidebar { width: 100%; padding: 12px 13px 9px; border-right: 0; border-bottom: 1px solid var(--line); }.sidebar-heading { padding: 0 2px 9px; }.model-list { display: flex; gap: 7px; overflow-x: auto; padding-bottom: 2px; }.model-button { min-width: 180px; padding: 10px; }.sidebar-divider, .cohort-card, .sidebar-info, .sidebar-footer { display: none; }.main-content { padding: 15px 13px 27px; }.hero-band { min-height: 250px; padding: 28px 24px; border-radius: 10px; }.hero-band h1 { font-size: 29px; }.hero-band p { font-size: 12px; }.hero-meta { gap: 12px; margin-top: 21px; }.hero-meta-item { font-size: 9px; }.kidney-illustration { position: absolute; right: -45px; bottom: -20px; opacity: .55; transform: scale(.65); }.page-heading { padding: 20px 2px 15px; }.heading-line h2 { font-size: 18px; }.heading-line .model-chip { padding: 6px 8px; font-size: 9px; }.page-heading p { font-size: 10px; line-height: 1.5; }.input-panel, .result-panel, .advice-panel, .nomogram-panel, .explanation-panel, .model-info-panel { padding: 18px 16px 14px; }.input-grid, .results-grid { grid-template-columns: 1fr; }.formula-strip { flex-direction: column; align-items: flex-start; gap: 5px; }.result-main { gap: 16px; }.probability-ring { width: 118px; height: 118px; }.ring-value { font-size: 21px; }.risk-title { font-size: 20px; }.risk-interpretation { font-size: 10px; }.score-pair { gap: 16px; margin-top: 11px; }.nomogram-legend, .explanation-legend { display: none; }.nomogram-header p, .explanation-header p { line-height: 1.55; }.input-footer { align-items: flex-start; flex-direction: column; gap: 5px; }.validation-message { text-align: left; } }
-@media print { body { background: #fff; }.topbar { position: static; box-shadow: none; }.sidebar, .topbar-actions, .input-footer, .disclaimer { display: none; }.workspace { display: block; }.main-content { max-width: none; padding: 20px; }.hero-band { box-shadow: none; }.panel { box-shadow: none; break-inside: avoid; } }
+@media (max-width: 760px) { .topbar { height: 62px; padding: 0 15px; }.brand-subtitle, .offline-pill { display: none; }.export-button { padding: 8px 10px; }.workspace { display: block; }.sidebar { width: 100%; padding: 12px 13px 9px; border-right: 0; border-bottom: 1px solid var(--line); }.sidebar-heading { padding: 0 2px 9px; }.model-list { display: flex; gap: 7px; overflow-x: auto; padding-bottom: 2px; }.model-button { min-width: 180px; padding: 10px; }.sidebar-divider, .cohort-card, .sidebar-info, .sidebar-footer { display: none; }.main-content { padding: 15px 13px 27px; }.hero-band { min-height: 250px; padding: 28px 24px; border-radius: 10px; }.hero-band h1 { font-size: 29px; }.hero-band p { font-size: 12px; }.hero-meta { gap: 12px; margin-top: 21px; }.hero-meta-item { font-size: 9px; }.kidney-illustration { position: absolute; right: -45px; bottom: -20px; opacity: .55; transform: scale(.65); }.page-heading { padding: 20px 2px 15px; }.heading-line h2 { font-size: 18px; }.heading-line .model-chip { padding: 6px 8px; font-size: 9px; }.page-heading p { font-size: 10px; line-height: 1.5; }.input-panel, .result-panel, .advice-panel, .nomogram-panel, .explanation-panel, .model-info-panel { padding: 18px 16px 14px; }.input-grid, .results-grid { grid-template-columns: 1fr; }.formula-strip { flex-direction: column; align-items: flex-start; gap: 5px; }.result-main { gap: 16px; }.probability-ring { width: 118px; height: 118px; }.ring-value { font-size: 21px; }.risk-title { font-size: 20px; }.risk-interpretation { font-size: 10px; }.score-pair { gap: 16px; margin-top: 11px; }.nomogram-legend, .explanation-legend { display: none; }.nomogram-header p, .explanation-header p { line-height: 1.55; }.input-validation { margin-top: 5px; }.validation-message { text-align: left; } }
+@media print { body { background: #fff; }.topbar { position: static; box-shadow: none; }.sidebar, .topbar-actions, .input-validation, .disclaimer { display: none; }.workspace { display: block; }.main-content { max-width: none; padding: 20px; }.hero-band { box-shadow: none; }.panel { box-shadow: none; break-inside: avoid; } }
