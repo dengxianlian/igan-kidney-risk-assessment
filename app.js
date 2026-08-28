@@ -16,7 +16,7 @@
       modelCount: "3 个模型", cohortTitle: "建模队列", cohortText: "南方医建模队列 · n=1308\n观察范围用于列线图标尺", privacyTitle: "数据留在本机", privacyText: "本页面不上传患者信息。关闭页面后，当前输入不会被保存。",
       heroKicker: "肾脏临床辅助 · RENAL CLINICAL SUPPORT", pageTitle: "IgAN 风险评估", pageIntro: "用可解释的逻辑回归模型，把关键检验结果转化为可读的风险信号。", heroMetaOne: "选择模型", heroMetaTwo: "录入结果", heroMetaThree: "查看建议",
       breadcrumbOne: "临床辅助评估", breadcrumbTwo: "模型计算", sectionHeading: "患者风险工作台", headingIntro: "录入检查结果，查看模型概率、变量贡献与下一步诊疗建议。", formulaLabel: "当前模型", inputTitle: "患者检查结果", resultTitle: "模型预测结果", liveLabel: "实时更新", probabilityCaption: "预测概率 P", riskLabel: "风险等级", aLabel: "线性预测值 A", modelLabel: "模型",
-      inputHint: "连续变量按原始测量值代入；性别为二分类变量。", adviceTitle: "下一步诊疗建议", adviceNote: "模型结果仅作临床辅助评估，不能替代医生诊断。", nomogramTitle: "风险等级列线图", nomogramIntro: "各变量按建模队列观察范围设定标尺；总分与概率使用同一线性预测值映射。", legendCurrent: "当前点位", legendThreshold: "风险阈值", nomogramSource: "标尺来源：IgAN 南方医建模队列（n=1308）；变量范围采用观察到的最小值与最大值。",
+      inputHint: "连续变量按原始测量值代入；性别为二分类变量。", adviceTitle: "下一步诊疗建议", adviceNote: "模型结果仅作临床辅助评估，不能替代医生诊断。", nomogramTitle: "风险等级列线图", nomogramIntro: "各变量按建模队列观察范围设定标尺；总分与概率使用同一线性预测值映射。", legendCurrent: "当前点位", legendThreshold: "风险阈值", nomogramSource: "标尺来源：对应模型建模队列；变量范围采用观察到的最小值与最大值。",
       explanationTitle: "变量贡献与分布", explanationIntro: "Bar 按当前病例线性项的绝对贡献排序；Scatter 展示该变量在建模队列范围内的线性贡献位置。", legendCase: "当前病例", legendLow: "低值", legendHigh: "高值", modelInfoTitle: "模型信息与使用边界", disclaimer: "本模型仅作为临床辅助评估工具，用于提示相关疾病或病理类型的可能性，不能作为确诊或排除诊断的唯一依据。疾病确诊仍需结合患者病史、临床表现、实验室及影像学检查，必要时依据肾活检及病理结果明确诊断。",
       invalid: "请检查输入范围后再查看结果。", filled: "已填", pending: "待检查输入", range: "范围", points: "分", total: "总分", riskProbability: "风险概率", pointsAxis: "POINTS / 分值", scatterAxis: "线性贡献 / Linear contribution", scoreMapping: "总分与概率共用线性预测值映射"
     },
@@ -25,7 +25,7 @@
       modelCount: "3 models", cohortTitle: "Modeling cohort", cohortText: "Southern Medical cohort · n=1308\nObserved ranges drive nomogram", privacyTitle: "Data stays on device", privacyText: "No patient data is uploaded. Inputs are not saved after this page is closed.",
       heroKicker: "肾脏临床辅助 · RENAL CLINICAL SUPPORT", pageTitle: "IgAN Risk Assessment", pageIntro: "Turn key laboratory results into readable risk signals with an interpretable logistic regression model.", heroMetaOne: "Choose model", heroMetaTwo: "Enter results", heroMetaThree: "Review advice",
       breadcrumbOne: "Clinical support", breadcrumbTwo: "Model calculation", sectionHeading: "Patient risk workbench", headingIntro: "Enter laboratory results to review probability, variable contribution, and next-step advice.", formulaLabel: "Active model", inputTitle: "Patient measurements", resultTitle: "Model output", liveLabel: "Live update", probabilityCaption: "Predicted probability P", riskLabel: "Risk tier", aLabel: "Linear predictor A", modelLabel: "Model",
-      inputHint: "Enter continuous variables as measured; sex is binary coded.", adviceTitle: "Next-step clinical advice", adviceNote: "For clinical support only; this model does not replace medical diagnosis.", nomogramTitle: "Risk nomogram", nomogramIntro: "Variable scales use observed modeling-cohort ranges; total points and probability share one linear-predictor mapping.", legendCurrent: "Current value", legendThreshold: "Risk threshold", nomogramSource: "Scale source: IgAN Southern Medical modeling cohort (n=1308); observed minimum and maximum values are used.",
+      inputHint: "Enter continuous variables as measured; sex is binary coded.", adviceTitle: "Next-step clinical advice", adviceNote: "For clinical support only; this model does not replace medical diagnosis.", nomogramTitle: "Risk nomogram", nomogramIntro: "Variable scales use observed modeling-cohort ranges; total points and probability share one linear-predictor mapping.", legendCurrent: "Current value", legendThreshold: "Risk threshold", nomogramSource: "Scale source: the corresponding modeling cohort; observed minimum and maximum values are used.",
       explanationTitle: "Variable contribution & distribution", explanationIntro: "Bars rank the current case's absolute linear-term contribution; scatter shows the variable's linear contribution across the modeling range.", legendCase: "Current case", legendLow: "Low value", legendHigh: "High value", modelInfoTitle: "Model notes & boundaries", disclaimer: "This model is a clinical support tool for estimating disease or pathology likelihood. It must not be used as the sole basis for diagnosis or exclusion. Final assessment should integrate history, examination, laboratory and imaging findings, and kidney biopsy when indicated.",
       invalid: "Check the input range before reviewing the result.", filled: "Filled", pending: "Check inputs", range: "Range", points: "pts", total: "Total points", riskProbability: "Risk probability", pointsAxis: "POINTS / 分值", scatterAxis: "线性贡献 / Linear contribution", scoreMapping: "Total points and probability share the linear-predictor mapping"
     }
@@ -66,10 +66,10 @@
       formulaEn: "A = 9.28 − 0.073423×Age − 0.077176×eGFR + 0.561605×24h protein − 1.546358 + 0.092458×LDL-C",
       fullFormula: "P = exp(A) / (1 + exp(A)); A = 9.28 − 0.0734226757215475×Age − 0.0771762735979292×eGFRCr + 0.56160497842656×U-24hTP − 1.54635793205125 + 0.092457733083033×LDL-C",
       fields: [
-        { key: "age", label: "年龄", enLabel: "Age", symbol: "Age", unit: "岁", enUnit: "years", min: 18, max: 90, plotMin: 18, plotMax: 84, decimals: 0, default: 34, beta: -0.0734226757215475 },
-        { key: "egfr", label: "估算肾小球滤过率", enLabel: "eGFR (creatinine)", symbol: "eGFRCr", unit: "mL/min/1.73m²", enUnit: "mL/min/1.73m²", min: 0, max: 200, plotMin: 2.59, plotMax: 197.11, decimals: 2, default: 80, beta: -0.0771762735979292 },
-        { key: "protein", label: "24 h 尿蛋白", enLabel: "24-hour urine protein", symbol: "U-24hTP", unit: "g/24 h", enUnit: "g/24 h", min: 0, max: 10, plotMin: 0, plotMax: 10, decimals: 2, default: 1.2, beta: 0.56160497842656, rangeSource: "clinical" },
-        { key: "ldlc", label: "低密度脂蛋白", enLabel: "LDL cholesterol", symbol: "LDL-C", unit: "mmol/L", enUnit: "mmol/L", min: 0, max: 10, plotMin: 0, plotMax: 10, decimals: 2, default: 3.1, beta: 0.092457733083033, rangeSource: "clinical" }
+        { key: "age", label: "年龄", enLabel: "Age", symbol: "Age", unit: "岁", enUnit: "years", min: 18, max: 90, plotMin: 18, plotMax: 70, decimals: 0, default: 34, beta: -0.0734226757215475 },
+        { key: "egfr", label: "估算肾小球滤过率", enLabel: "eGFR (creatinine)", symbol: "eGFRCr", unit: "mL/min/1.73m²", enUnit: "mL/min/1.73m²", min: 0, max: 200, plotMin: 4.447097497967679, plotMax: 152.4507753547946, decimals: 2, default: 80, beta: -0.0771762735979292 },
+        { key: "protein", label: "24 h 尿蛋白", enLabel: "24-hour urine protein", symbol: "U-24hTP", unit: "g/24 h", enUnit: "g/24 h", min: 0, max: 20, plotMin: 0.05, plotMax: 19.58, decimals: 2, default: 1.2, beta: 0.56160497842656, rangeSource: "cohort" },
+        { key: "ldlc", label: "低密度脂蛋白", enLabel: "LDL cholesterol", symbol: "LDL-C", unit: "mmol/L", enUnit: "mmol/L", min: 0, max: 15, plotMin: 1.12, plotMax: 12.32, decimals: 2, default: 3.1, beta: 0.092457733083033, rangeSource: "cohort" }
       ], recommendations: {
         veryLow: ["当前模型提示肾小管萎缩/间质纤维化可能性较低，仍建议结合肾功能、蛋白尿及肾活检病理综合判断。", "The model suggests lower likelihood of tubular atrophy/interstitial fibrosis; integrate kidney function, proteinuria and biopsy pathology."],
         low: ["当前模型提示相关病理损伤可能性较低，建议结合临床病史、尿蛋白定量、eGFR 变化趋势及影像学结果随访评估。", "The model suggests lower likelihood of injury; follow with history, quantitative proteinuria, eGFR trend and imaging."],
@@ -99,7 +99,7 @@
   ];
 
   const els = {
-    modelList: document.querySelector("#modelList"), modelCount: document.querySelector("#modelCount"), headingModelChip: document.querySelector("#headingModelChip"), inputForm: document.querySelector("#inputForm"), formulaText: document.querySelector("#formulaText"), completionStatus: document.querySelector("#completionStatus"), validationMessage: document.querySelector("#validationMessage"), probabilityRing: document.querySelector("#probabilityRing"), probabilityValue: document.querySelector("#probabilityValue"), aValue: document.querySelector("#aValue"), modelCode: document.querySelector("#modelCode"), riskTitle: document.querySelector("#riskTitle"), riskInterpretation: document.querySelector("#riskInterpretation"), riskScale: document.querySelector("#riskScale"), adviceCallout: document.querySelector("#adviceCallout"), adviceBody: document.querySelector("#adviceBody"), nomogram: document.querySelector("#nomogram"), contributionPlot: document.querySelector("#contributionPlot"), modelInfoContent: document.querySelector("#modelInfoContent")
+    modelList: document.querySelector("#modelList"), modelCount: document.querySelector("#modelCount"), headingModelChip: document.querySelector("#headingModelChip"), inputForm: document.querySelector("#inputForm"), formulaText: document.querySelector("#formulaText"), completionStatus: document.querySelector("#completionStatus"), validationMessage: document.querySelector("#validationMessage"), probabilityRing: document.querySelector("#probabilityRing"), probabilityValue: document.querySelector("#probabilityValue"), aValue: document.querySelector("#aValue"), modelCode: document.querySelector("#modelCode"), riskTitle: document.querySelector("#riskTitle"), riskInterpretation: document.querySelector("#riskInterpretation"), riskScale: document.querySelector("#riskScale"), adviceCallout: document.querySelector("#adviceCallout"), adviceBody: document.querySelector("#adviceBody"), nomogram: document.querySelector("#nomogram"), nomogramSource: document.querySelector("#nomogramSource"), contributionPlot: document.querySelector("#contributionPlot"), modelInfoContent: document.querySelector("#modelInfoContent")
   };
   let activeModelId = "uBASE";
   let lang = "zh";
@@ -173,6 +173,14 @@
     renderRiskScale(result.p, tier); renderNomogram(model, values, result, tier); renderContributionPlot(model, result); renderModelInfo(model);
   }
 
+  function setNomogramSource(model) {
+    if (model.id === "oxt") {
+      els.nomogramSource.textContent = lang === "zh" ? "标尺来源：Oxford-T 南方医建模队列（n=554）；变量范围采用观察到的最小值与最大值。" : "Scale source: Oxford-T Southern Medical modeling cohort (n=554); observed minimum and maximum values are used.";
+    } else {
+      els.nomogramSource.textContent = t("nomogramSource");
+    }
+  }
+
   function renderRiskScale(probability, tier) {
     const labels = lang === "zh" ? ["0%", "15%", "40%", "70%", "90%", "100%"] : ["0%", "15%", "40%", "70%", "90%", "100%"];
     els.riskScale.innerHTML = `<div class="risk-scale-track"><span></span><span></span><span></span><span></span><span></span></div><div class="risk-scale-marker" style="left:${probability * 100}%;background:${tier.color};color:${tier.color}"></div><div class="risk-scale-labels">${labels.map((label) => `<span>${label}</span>`).join("")}</div>`;
@@ -185,6 +193,7 @@
 
   function renderNomogram(model, values, result, tier) {
     const svg = els.nomogram; const ns = "http://www.w3.org/2000/svg"; const width = 1080; const left = 205; const right = 26; const axisWidth = width - left - right; const rowHeight = 62; const top = 47; const scale = getScale(model); const height = top + (model.fields.length + 3) * rowHeight + 25; svg.setAttribute("viewBox", `0 0 ${width} ${height}`); svg.setAttribute("height", String(height)); svg.innerHTML = "";
+    setNomogramSource(model);
     const add = (tag, attrs, value) => { const node = document.createElementNS(ns, tag); Object.entries(attrs || {}).forEach(([key, val]) => node.setAttribute(key, val)); if (value !== undefined) node.textContent = value; svg.appendChild(node); return node; }; const line = (x1, y1, x2, y2, attrs = {}) => add("line", { x1, y1, x2, y2, ...attrs }); const text = (x, y, value, attrs = {}) => add("text", { x, y, fill: "#66808a", "font-size": 10, ...attrs }, value); const xAt = (ratio) => left + clamp(ratio, 0, 1) * axisWidth;
     const aRatio = (a) => clamp((a - scale.aMin) / (scale.aMax - scale.aMin || 1), 0, 1); const pointX = (points) => xAt(points / 100);
     add("rect", { x: 0, y: 0, width, height, rx: 7, fill: "#fbfdfc" }); text(17, 22, t("pointsAxis"), { fill: "#315864", "font-size": 10, "font-weight": "800", "letter-spacing": "1" }); line(left, top, left + axisWidth, top, { stroke: "#839da5", "stroke-width": 1.5 });
@@ -212,7 +221,12 @@
   }
 
   function renderModelInfo(model) {
-    const names = model.fields.map(fieldLabel).join(lang === "zh" ? "、" : ", "); const source = lang === "zh" ? "IgAN 南方医建模队列（n=1308）" : "IgAN Southern Medical modeling cohort (n=1308)"; const purpose = lang === "zh" ? `基于逻辑回归的${model.interpretation}辅助评估。` : `Logistic regression support tool for ${model.interpretationEn}.`; const rangeText = lang === "zh" ? "uBASE / BASE 的列线图范围来自队列观察值；OxT 的 24 h 尿蛋白与 LDL-C 使用预设临床范围 0–10。" : "uBASE / BASE nomogram ranges use observed cohort values; OxT 24-hour protein and LDL-C use pragmatic clinical bounds of 0–10."; els.modelInfoContent.innerHTML = `<dl><dt>${lang === "zh" ? "模型用途" : "Purpose"}</dt><dd>${purpose}</dd><dt>${lang === "zh" ? "输入变量" : "Inputs"}</dt><dd>${names}. ${lang === "zh" ? "连续变量使用真实检查值。" : "Continuous values are entered as measured."}</dd><dt>${lang === "zh" ? "数据来源" : "Data source"}</dt><dd>${source}. ${rangeText}</dd><dt>${lang === "zh" ? "运行方式" : "Runtime"}</dt><dd>${lang === "zh" ? "计算在浏览器端完成，不调用远程接口。" : "All calculations run in the browser without a remote API."}</dd></dl><div class="model-formula">${lang === "zh" ? model.fullFormula : model.fullFormula}</div>`;
+    const names = model.fields.map(fieldLabel).join(lang === "zh" ? "、" : ", ");
+    const isOxT = model.id === "oxt";
+    const source = isOxT ? (lang === "zh" ? "Oxford-T 南方医建模队列（n=554）" : "Oxford-T Southern Medical modeling cohort (n=554)") : (lang === "zh" ? "IgAN 南方医建模队列（n=1308）" : "IgAN Southern Medical modeling cohort (n=1308)");
+    const purpose = lang === "zh" ? `基于逻辑回归的${model.interpretation}辅助评估。` : `Logistic regression support tool for ${model.interpretationEn}.`;
+    const rangeText = isOxT ? (lang === "zh" ? "OxT 列线图范围采用 Oxford-T 南方医建模队列（n=554）的观察值。" : "OxT nomogram ranges use observed values from the Oxford-T Southern Medical modeling cohort (n=554).") : (lang === "zh" ? "uBASE / BASE 的列线图范围采用 IgAN 南方医建模队列（n=1308）的观察值。" : "uBASE / BASE nomogram ranges use observed values from the IgAN Southern Medical modeling cohort (n=1308).");
+    els.modelInfoContent.innerHTML = `<dl><dt>${lang === "zh" ? "模型用途" : "Purpose"}</dt><dd>${purpose}</dd><dt>${lang === "zh" ? "输入变量" : "Inputs"}</dt><dd>${names}. ${lang === "zh" ? "连续变量使用真实检查值。" : "Continuous values are entered as measured."}</dd><dt>${lang === "zh" ? "数据来源" : "Data source"}</dt><dd>${source}. ${rangeText}</dd><dt>${lang === "zh" ? "运行方式" : "Runtime"}</dt><dd>${lang === "zh" ? "计算在浏览器端完成，不调用远程接口。" : "All calculations run in the browser without a remote API."}</dd></dl><div class="model-formula">${model.fullFormula}</div>`;
   }
 
   function selectModel(modelId) { if (!MODEL_DEFS[modelId]) return; activeModelId = modelId; renderModelList(); renderForm(MODEL_DEFS[activeModelId]); updateResult(); }
