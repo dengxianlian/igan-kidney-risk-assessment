@@ -115,8 +115,8 @@
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
   function updateStaticText() {
-    const ids = ["brandSubtitle", "modelCount", "cohortTitle", "privacyTitle", "privacyText", "heroKicker", "pageTitle", "pageIntro", "heroMetaOne", "heroMetaTwo", "heroMetaThree", "breadcrumbOne", "breadcrumbTwo", "sectionHeading", "headingIntro", "formulaLabel", "inputTitle", "resultTitle", "liveLabel", "probabilityCaption", "riskLabel", "aLabel", "modelLabel", "inputHint", "adviceTitle", "adviceNote", "nomogramTitle", "nomogramIntro", "legendCurrent", "legendThreshold", "nomogramSource", "explanationTitle", "explanationIntro", "legendCase", "legendLow", "legendHigh", "modelInfoTitle", "disclaimerText"];
-    const keyById = { offlineLabel: "offline", exportLabel: "export" };
+    const ids = ["brandSubtitle", "modelCount", "cohortTitle", "privacyTitle", "privacyText", "heroKicker", "pageTitle", "pageIntro", "heroMetaOne", "heroMetaTwo", "heroMetaThree", "breadcrumbOne", "breadcrumbTwo", "sectionHeading", "headingIntro", "formulaLabel", "inputTitle", "resultTitle", "liveLabel", "probabilityCaption", "riskLabel", "aLabel", "modelLabel", "inputHint", "adviceTitle", "adviceNote", "nomogramTitle", "nomogramIntro", "legendCurrent", "legendThreshold", "nomogramSource", "explanationTitle", "explanationIntro", "legendCase", "legendLow", "legendHigh", "modelInfoTitle"];
+    const keyById = { offlineLabel: "offline", exportLabel: "export", disclaimerText: "disclaimer" };
     ids.forEach((id) => { const node = document.querySelector(`#${id}`); if (node) node.textContent = t(id); });
     Object.entries(keyById).forEach(([id, key]) => { const node = document.querySelector(`#${id}`); if (node) node.textContent = t(key); });
     document.querySelector("#cohortText").innerHTML = t("cohortText").replace("\n", "<br />");
