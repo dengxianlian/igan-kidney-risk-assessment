@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#063f43" />
     <meta name="description" content="肾眼智能体离线肾病风险评估工作台，支持 IgAN 逻辑回归模型。" />
     <title>肾眼智能体 · IgAN 风险评估</title>
-    <link rel="stylesheet" href="styles.css?v=20260828-5" />
+    <link rel="stylesheet" href="styles.css?v=20260828-6" />
   </head>
   <body>
     <div class="app-shell">
@@ -50,7 +50,7 @@
               <p id="pageIntro">用可解释的逻辑回归模型，把关键检验结果转化为可读的风险信号。</p>
               <div class="hero-meta"><span class="hero-meta-item"><b>01</b><span id="heroMetaOne">选择模型</span></span><span class="hero-meta-item"><b>02</b><span id="heroMetaTwo">录入结果</span></span><span class="hero-meta-item"><b>03</b><span id="heroMetaThree">查看建议</span></span></div>
             </div>
-            <div class="kidney-illustration" aria-hidden="true"><div class="kidney kidney-left"></div><div class="kidney kidney-right"></div><div class="ureter ureter-left"></div><div class="ureter ureter-right"></div><div class="kidney-pulse"></div></div>
+            <div class="kidney-illustration" aria-hidden="true"><div class="digital-grid"></div><div class="digital-kidney digital-kidney-left"><span></span></div><div class="digital-kidney digital-kidney-right"><span></span></div><div class="digital-marker"><span class="marker-ring"></span><span class="marker-core">01</span><i class="marker-scan"></i></div><span class="digital-label label-top">RENAL / 01</span><span class="digital-label label-bottom">SIGNAL 0.98</span></div>
           </section>
 
           <section class="page-heading">
@@ -58,10 +58,9 @@
           </section>
 
           <section class="panel input-panel">
-            <div class="panel-header"><div><div class="section-kicker">01 / INPUT</div><h2 id="inputTitle">患者检查结果</h2></div><div class="completion-status" id="completionStatus">已填 6 / 6</div></div>
-            <div class="formula-strip"><span class="formula-label" id="formulaLabel">当前模型</span><code id="formulaText"></code></div>
+            <div class="panel-header"><div><div class="section-kicker">01 / INPUT</div><h2 id="inputTitle">结果输入</h2></div><div class="completion-status" id="completionStatus">已填 6 / 6</div></div>
             <form id="inputForm" class="input-grid" novalidate></form>
-            <div class="input-footer"><span><span class="required-dot">*</span><span id="inputHint">连续变量按原始测量值代入；性别为二分类变量。</span></span><span class="validation-message" id="validationMessage" role="status"></span></div>
+            <div class="input-validation" aria-live="polite"><span class="validation-message" id="validationMessage" role="status"></span></div>
           </section>
 
           <section class="results-grid">
@@ -69,7 +68,7 @@
             <article class="panel advice-panel"><div class="panel-header compact"><div><div class="section-kicker">03 / ACTION</div><h2 id="adviceTitle">下一步诊疗建议</h2></div><span class="advice-mark" aria-hidden="true">↗</span></div><div class="advice-callout" id="adviceCallout"></div><div class="advice-body" id="adviceBody"></div><div class="advice-note"><span aria-hidden="true">!</span><span id="adviceNote">模型结果仅作临床辅助评估，不能替代医生诊断。</span></div></article>
           </section>
 
-          <section class="panel nomogram-panel"><div class="panel-header nomogram-header"><div><div class="section-kicker">04 / NOMOGRAM</div><h2 id="nomogramTitle">风险等级列线图</h2><p id="nomogramIntro">各变量按建模队列观察范围设定标尺；总分与概率使用同一线性预测值映射。</p></div><div class="nomogram-legend"><span class="legend-dot teal"></span><span id="legendCurrent">当前点位</span><span class="legend-dot coral"></span><span id="legendThreshold">风险阈值</span></div></div><div class="nomogram-scroll"><svg id="nomogram" role="img" aria-label="风险等级列线图"></svg></div><div class="nomogram-source" id="nomogramSource">标尺来源：IgAN 南方医建模队列（n=1308）；变量范围采用观察到的最小值与最大值。</div></section>
+          <section class="panel nomogram-panel"><div class="panel-header nomogram-header"><div><div class="section-kicker">04 / NOMOGRAM</div><h2 id="nomogramTitle">风险等级列线图</h2><p id="nomogramIntro">各变量按建模队列观察范围设定标尺；总分与概率使用同一线性预测值映射。</p></div><div class="nomogram-legend"><span class="legend-dot teal"></span><span id="legendCurrent">当前点位</span><span class="legend-dot coral"></span><span id="legendThreshold">风险阈值</span></div></div><div class="nomogram-scroll"><svg id="nomogram" role="img" aria-label="风险等级列线图"></svg></div><div class="nomogram-tier-key" id="nomogramTierKey" aria-label="风险等级"></div><div class="nomogram-source" id="nomogramSource">标尺来源：IgAN 南方医建模队列（n=1308）；变量范围采用观察到的最小值与最大值。</div></section>
 
           <section class="panel explanation-panel"><div class="panel-header explanation-header"><div><div class="section-kicker">05 / EXPLANATION</div><h2 id="explanationTitle">变量贡献与分布</h2><p id="explanationIntro">Bar 按当前病例线性项的绝对贡献排序；Scatter 展示该变量在建模队列范围内的线性贡献位置。</p></div><div class="explanation-legend"><span class="legend-dot teal"></span><span id="legendCase">当前病例</span><span class="legend-dot blue"></span><span id="legendLow">低值</span><span class="legend-dot coral"></span><span id="legendHigh">高值</span></div></div><div class="explanation-scroll"><svg id="contributionPlot" role="img" aria-label="变量贡献 Bar 与 Scatter 图"></svg></div></section>
 
@@ -79,6 +78,6 @@
         </main>
       </div>
     </div>
-    <script src="app.js?v=20260828-6"></script>
+    <script src="app.js?v=20260828-7"></script>
   </body>
 </html>
