@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#063f43" />
     <meta name="description" content="肾眼智能体离线肾病风险评估工作台，支持 IgAN 逻辑回归模型。" />
     <title>肾眼智能体 · IgAN 风险评估</title>
-    <link rel="stylesheet" href="styles.css?v=20260828-6" />
+    <link rel="stylesheet" href="styles.css?v=20260828-7" />
   </head>
   <body>
     <div class="app-shell">
@@ -60,9 +60,11 @@
           <section class="panel input-panel">
             <div class="panel-header"><div><div class="section-kicker">01 / INPUT</div><h2 id="inputTitle">结果输入</h2></div><div class="completion-status" id="completionStatus">已填 6 / 6</div></div>
             <form id="inputForm" class="input-grid" novalidate></form>
+            <div class="input-actions"><button class="run-button" id="runButton" type="submit" form="inputForm"><span aria-hidden="true">↗</span><span id="runLabel">运行模型</span></button><p class="run-hint" id="runHint">填写全部项目后点击运行模型；结果将在运行后展开。</p></div>
             <div class="input-validation" aria-live="polite"><span class="validation-message" id="validationMessage" role="status"></span></div>
           </section>
 
+          <div class="result-workspace" id="resultWorkspace" hidden>
           <section class="results-grid">
             <article class="panel result-panel"><div class="panel-header compact"><div><div class="section-kicker">02 / OUTPUT</div><h2 id="resultTitle">模型预测结果</h2></div><span class="live-indicator"><i></i><span id="liveLabel">实时更新</span></span></div><div class="result-main"><div class="probability-ring" id="probabilityRing" aria-label="预测概率"><div class="ring-inner"><span class="ring-value" id="probabilityValue">95.98%</span><span class="ring-caption" id="probabilityCaption">预测概率 P</span></div></div><div class="result-summary"><div class="risk-label" id="riskLabel">风险等级</div><div class="risk-title" id="riskTitle">极高风险</div><div class="risk-interpretation" id="riskInterpretation"></div><div class="score-pair"><div><span id="aLabel">线性预测值 A</span><strong id="aValue">3.1722</strong></div><div><span id="modelLabel">模型</span><strong id="modelCode">IgAN-uBASE</strong></div></div></div></div><div class="risk-scale" id="riskScale" aria-label="风险概率分层"></div></article>
             <article class="panel advice-panel"><div class="panel-header compact"><div><div class="section-kicker">03 / ACTION</div><h2 id="adviceTitle">下一步诊疗建议</h2></div><span class="advice-mark" aria-hidden="true">↗</span></div><div class="advice-callout" id="adviceCallout"></div><div class="advice-body" id="adviceBody"></div><div class="advice-note"><span aria-hidden="true">!</span><span id="adviceNote">模型结果仅作临床辅助评估，不能替代医生诊断。</span></div></article>
@@ -75,9 +77,10 @@
           <section class="panel model-info-panel"><div class="panel-header compact"><div><div class="section-kicker">06 / MODEL NOTE</div><h2 id="modelInfoTitle">模型信息与使用边界</h2></div></div><div class="model-info-content" id="modelInfoContent"></div></section>
 
           <footer class="disclaimer"><span class="disclaimer-icon" aria-hidden="true">!</span><span id="disclaimerText">本模型仅作为临床辅助评估工具，用于提示相关疾病或病理类型的可能性，不能作为确诊或排除诊断的唯一依据。疾病确诊仍需结合患者病史、临床表现、实验室及影像学检查，必要时依据肾活检及病理结果明确诊断。</span></footer>
+          </div>
         </main>
       </div>
     </div>
-    <script src="app.js?v=20260828-8"></script>
+    <script src="app.js?v=20260828-9"></script>
   </body>
 </html>
