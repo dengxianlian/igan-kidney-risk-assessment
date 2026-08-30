@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#063f43" />
-    <meta name="description" content="肾眼智能体离线肾病风险评估工作台，支持 IgAN 逻辑回归模型。" />
-    <title>肾眼智能体 · IgAN 风险评估</title>
-    <link rel="stylesheet" href="styles.css?v=20260829-2" />
+    <meta name="description" content="ShenYan AI offline renal risk assessment workbench for IgAN logistic-regression models." />
+    <title>ShenYan AI · IgAN Risk Assessment</title>
+    <link rel="stylesheet" href="styles.css?v=20260830-2" />
   </head>
   <body>
     <div class="app-shell">
@@ -14,73 +14,76 @@
         <div class="brand-lockup">
           <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
           <div>
-            <div class="brand-name">肾眼智能体</div>
-            <div class="brand-subtitle" id="brandSubtitle">肾病风险评估工作台</div>
+            <div class="brand-name" id="brandName">ShenYan AI</div>
+            <div class="brand-subtitle" id="brandSubtitle">Renal risk assessment workbench</div>
           </div>
         </div>
         <div class="topbar-actions">
-          <span class="offline-pill"><i></i><span id="offlineLabel">离线计算</span></span>
-          <button class="language-toggle" id="languageToggle" type="button" aria-label="切换语言">EN</button>
-          <button class="icon-button" id="resetButton" type="button" title="重置当前输入" aria-label="重置当前输入">↻</button>
-          <button class="export-button" id="printButton" type="button"><span aria-hidden="true">⇩</span><span id="exportLabel">导出结果</span></button>
+          <span class="offline-pill"><i></i><span id="offlineLabel">Offline calculation</span></span>
+          <select class="language-toggle" id="languageToggle" aria-label="Language">
+            <option value="en" selected>English</option>
+            <option value="zh">中文</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+            <option value="it">Italiano</option>
+            <option value="ja">日本語</option>
+          </select>
+          <button class="icon-button" id="resetButton" type="button" title="Reset current inputs" aria-label="Reset current inputs">↻</button>
+          <button class="export-button" id="printButton" type="button" title="Export result" aria-label="Export result"><span aria-hidden="true">⇩</span><span id="exportLabel">Export result</span></button>
         </div>
       </header>
 
       <div class="workspace">
         <aside class="sidebar">
-          <div class="sidebar-heading"><span class="eyebrow">MODEL SUITE</span><span class="model-count" id="modelCount">3 个模型</span></div>
-          <nav class="model-list" id="modelList" aria-label="模型选择"></nav>
+          <div class="sidebar-heading"><span class="eyebrow" id="modelSuiteLabel">MODEL SUITE</span><span class="model-count" id="modelCount">3 models</span></div>
+          <nav class="model-list" id="modelList" aria-label="Model selection"></nav>
           <div class="sidebar-divider"></div>
-          <div class="cohort-card">
-            <div class="cohort-icon" aria-hidden="true"><span></span><span></span></div>
-            <div><strong id="cohortTitle">建模队列</strong><p id="cohortText">南方医建模队列 · n=1308<br />观察范围用于列线图标尺</p></div>
-          </div>
           <div class="sidebar-info">
             <div class="info-icon" aria-hidden="true">⌁</div>
-            <div><strong id="privacyTitle">数据留在本机</strong><p id="privacyText">本页面不上传患者信息。关闭页面后，当前输入不会被保存。</p></div>
+            <div><strong id="privacyTitle">Data stays on device</strong><p id="privacyText">No patient data is uploaded. Inputs are not saved after this page is closed.</p></div>
           </div>
-          <div class="sidebar-footer">v0.2 · offline clinical prototype</div>
+          <div class="sidebar-footer" id="sidebarFooter">v0.3 · offline clinical prototype</div>
         </aside>
 
         <main class="main-content">
           <section class="hero-band">
             <div class="hero-copy">
-              <div class="hero-kicker" id="heroKicker">肾脏临床辅助 · RENAL CLINICAL SUPPORT</div>
-              <h1 id="pageTitle">IgAN 风险评估</h1>
-              <p id="pageIntro">用可解释的逻辑回归模型，把关键检验结果转化为可读的风险信号。</p>
-              <div class="hero-meta"><span class="hero-meta-item"><b>01</b><span id="heroMetaOne">选择模型</span></span><span class="hero-meta-item"><b>02</b><span id="heroMetaTwo">录入结果</span></span><span class="hero-meta-item"><b>03</b><span id="heroMetaThree">查看建议</span></span></div>
+              <div class="hero-kicker" id="heroKicker">RENAL CLINICAL SUPPORT</div>
+              <h1 id="pageTitle">IgAN Risk Assessment</h1>
+              <p id="pageIntro">Turn key laboratory results into readable risk signals with an interpretable logistic regression model.</p>
+              <div class="hero-meta"><span class="hero-meta-item"><b>01</b><span id="heroMetaOne">Choose model</span></span><span class="hero-meta-item"><b>02</b><span id="heroMetaTwo">Enter results</span></span><span class="hero-meta-item"><b>03</b><span id="heroMetaThree">Review advice</span></span></div>
             </div>
-            <div class="kidney-illustration" aria-hidden="true"><div class="digital-grid"></div><div class="tech-frame"></div><div class="scan-beam"></div><div class="signal-dots"><i></i><i></i><i></i><i></i></div><div class="telemetry-bars"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="digital-kidney digital-kidney-left"><span></span></div><div class="digital-kidney digital-kidney-right"><span></span></div><div class="digital-marker"><span class="marker-ring"></span><span class="marker-core">01</span><i class="marker-scan"></i></div></div>
+            <div class="kidney-illustration" aria-hidden="true"><img class="kidney-image" src="kidney-tech.png" alt="" /><div class="digital-grid"></div><div class="tech-frame"></div><div class="scan-beam"></div><div class="signal-dots"><i></i><i></i><i></i><i></i></div><div class="telemetry-bars"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="digital-marker"><span class="marker-ring"></span><i class="marker-scan"></i></div></div>
           </section>
 
           <section class="page-heading">
-            <div><div class="breadcrumb"><span id="breadcrumbOne">临床辅助评估</span><span>/</span><span id="breadcrumbTwo">模型计算</span></div><div class="heading-line"><h2 id="sectionHeading">患者风险工作台</h2><div class="model-chip" id="headingModelChip">IgAN-uBASE</div></div><p id="headingIntro">录入检查结果，查看模型概率、变量贡献与下一步诊疗建议。</p></div>
+            <div><div class="breadcrumb"><span id="breadcrumbOne">Clinical support</span><span>/</span><span id="breadcrumbTwo">Model calculation</span></div><div class="heading-line"><h2 id="sectionHeading">Patient risk workbench</h2><div class="model-chip" id="headingModelChip">IgAN-uBASE</div></div><p id="headingIntro">Enter laboratory results to review probability, variable contribution, and next-step advice.</p></div>
           </section>
 
           <section class="panel input-panel">
-            <div class="panel-header"><div><div class="section-kicker">01 / INPUT</div><h2 id="inputTitle">结果输入</h2></div><div class="completion-status" id="completionStatus">已填 6 / 6</div></div>
+            <div class="panel-header"><div><div class="section-kicker" id="inputKicker">01 / INPUT</div><h2 id="inputTitle">Result input</h2></div><div class="completion-status" id="completionStatus">Filled 0 / 6</div></div>
             <form id="inputForm" class="input-grid" novalidate></form>
-            <div class="input-actions"><button class="run-button" id="runButton" type="submit" form="inputForm"><span aria-hidden="true">↗</span><span id="runLabel">运行模型</span></button><p class="run-hint" id="runHint">填写全部项目后点击运行模型；结果将在运行后展开。</p></div>
+            <div class="input-actions"><button class="run-button" id="runButton" type="submit" form="inputForm"><span aria-hidden="true">↗</span><span id="runLabel">Run model</span></button><p class="run-hint" id="runHint">Complete every field, then run the model to reveal the results.</p></div>
             <div class="input-validation" aria-live="polite"><span class="validation-message" id="validationMessage" role="status"></span></div>
           </section>
 
           <div class="result-workspace" id="resultWorkspace" hidden>
           <section class="results-grid">
-            <article class="panel result-panel"><div class="panel-header compact"><div><div class="section-kicker">02 / OUTPUT</div><h2 id="resultTitle">模型预测结果</h2></div><span class="live-indicator"><i></i><span id="liveLabel">实时更新</span></span></div><div class="result-main"><div class="probability-ring" id="probabilityRing" aria-label="预测概率"><div class="ring-inner"><span class="ring-value" id="probabilityValue">95.98%</span><span class="ring-caption" id="probabilityCaption">预测概率 P</span></div></div><div class="result-summary"><div class="risk-label" id="riskLabel">风险等级</div><div class="risk-title" id="riskTitle">极高风险</div><div class="risk-interpretation" id="riskInterpretation"></div><div class="score-pair"><div><span id="aLabel">线性预测值 A</span><strong id="aValue">3.1722</strong></div><div><span id="modelLabel">模型</span><strong id="modelCode">IgAN-uBASE</strong></div></div></div></div><div class="risk-scale" id="riskScale" aria-label="风险概率分层"></div></article>
-            <article class="panel advice-panel"><div class="panel-header compact"><div><div class="section-kicker">03 / ACTION</div><h2 id="adviceTitle">下一步诊疗建议</h2></div><span class="advice-mark" aria-hidden="true">↗</span></div><div class="advice-callout" id="adviceCallout"></div><div class="advice-body" id="adviceBody"></div><div class="advice-note"><span aria-hidden="true">!</span><span id="adviceNote">模型结果仅作临床辅助评估，不能替代医生诊断。</span></div></article>
+            <article class="panel result-panel"><div class="panel-header compact"><div><div class="section-kicker" id="resultKicker">02 / OUTPUT</div><h2 id="resultTitle">Model output</h2></div><span class="live-indicator"><i></i><span id="liveLabel">Live update</span></span></div><div class="result-main"><div class="probability-ring" id="probabilityRing" aria-label="Predicted probability"><div class="ring-inner"><span class="ring-value" id="probabilityValue">—</span><span class="ring-caption" id="probabilityCaption">Predicted probability</span></div></div><div class="result-summary"><div class="risk-label" id="riskLabel">Risk tier</div><div class="risk-title" id="riskTitle">—</div><div class="risk-interpretation" id="riskInterpretation"></div><div class="score-pair"><div><span id="aLabel">Linear predictor A</span><strong id="aValue">—</strong></div><div><span id="modelLabel">Model</span><strong id="modelCode">IgAN-uBASE</strong></div></div></div></div><div class="risk-scale" id="riskScale" aria-label="Risk probability tiers"></div></article>
+            <article class="panel advice-panel"><div class="panel-header compact"><div><div class="section-kicker" id="actionKicker">03 / ACTION</div><h2 id="adviceTitle">Next-step clinical advice</h2></div><span class="advice-mark" aria-hidden="true">↗</span></div><div class="advice-callout" id="adviceCallout"></div><div class="advice-body" id="adviceBody"></div><div class="advice-note"><span aria-hidden="true">!</span><span id="adviceNote">For clinical support only; this model does not replace medical diagnosis.</span></div></article>
           </section>
 
-          <section class="panel nomogram-panel"><div class="panel-header nomogram-header"><div><div class="section-kicker">04 / NOMOGRAM</div><h2 id="nomogramTitle">风险等级列线图</h2><p id="nomogramIntro">各变量按建模队列观察范围设定标尺；总分与概率使用同一线性预测值映射。</p></div><div class="nomogram-legend"><span class="legend-dot teal"></span><span id="legendCurrent">当前点位</span><span class="legend-dot coral"></span><span id="legendThreshold">风险阈值</span></div></div><div class="nomogram-scroll"><svg id="nomogram" role="img" aria-label="风险等级列线图"></svg></div><div class="nomogram-tier-key" id="nomogramTierKey" aria-label="风险等级"></div><div class="nomogram-source" id="nomogramSource">标尺来源：IgAN 南方医建模队列（n=1308）；变量范围采用观察到的最小值与最大值。</div></section>
+          <section class="panel nomogram-panel"><div class="panel-header nomogram-header"><div><div class="section-kicker" id="nomogramKicker">04 / NOMOGRAM</div><h2 id="nomogramTitle">Risk nomogram</h2><p id="nomogramIntro">Variable scales use observed modeling-data ranges; total points and probability share one linear-predictor mapping.</p></div><div class="nomogram-legend"><span class="legend-dot teal"></span><span id="legendCurrent">Current value</span><span class="legend-dot coral"></span><span id="legendThreshold">Risk threshold</span></div></div><div class="nomogram-scroll"><svg id="nomogram" role="img" aria-label="Risk nomogram"></svg></div><div class="nomogram-tier-key" id="nomogramTierKey" aria-label="Risk tiers"></div><div class="nomogram-source" id="nomogramSource">Variable scales use observed modeling-data ranges.</div></section>
 
-          <section class="panel explanation-panel"><div class="panel-header explanation-header"><div><div class="section-kicker">05 / EXPLANATION</div><h2 id="explanationTitle">变量贡献与分布</h2><p id="explanationIntro">Bar 按当前病例线性项的绝对贡献排序；Scatter 展示该变量在建模队列范围内的线性贡献位置。</p></div><div class="explanation-legend"><span class="legend-dot teal"></span><span id="legendCase">当前病例</span><span class="legend-dot blue"></span><span id="legendLow">低值</span><span class="legend-dot coral"></span><span id="legendHigh">高值</span></div></div><div class="explanation-scroll"><svg id="contributionPlot" role="img" aria-label="变量贡献 Bar 与 Scatter 图"></svg></div></section>
+          <section class="panel explanation-panel"><div class="panel-header explanation-header"><div><div class="section-kicker" id="explanationKicker">05 / EXPLANATION</div><h2 id="explanationTitle">Variable contribution &amp; distribution</h2><p id="explanationIntro">Bar and Scatter are shown separately, with the same feature order as the reference plots.</p></div><div class="explanation-legend"><span class="legend-dot teal"></span><span id="legendCase">Current case</span><span class="legend-dot blue"></span><span id="legendLow">Low value</span><span class="legend-dot coral"></span><span id="legendHigh">High value</span></div></div><div class="chart-block"><div class="chart-block-header"><h3 id="barPlotTitle">Bar · Current case contribution</h3></div><div class="explanation-scroll"><svg id="barPlot" role="img" aria-label="Variable contribution bar chart"></svg></div></div><div class="chart-block"><div class="chart-block-header"><h3 id="scatterPlotTitle">Scatter · Contribution distribution</h3><span id="scatterPlotNote">Linear contribution</span></div><div class="explanation-scroll"><svg id="scatterPlot" role="img" aria-label="Variable contribution scatter chart"></svg></div></div></section>
 
-          <section class="panel model-info-panel"><div class="panel-header compact"><div><div class="section-kicker">06 / MODEL NOTE</div><h2 id="modelInfoTitle">模型信息与使用边界</h2></div></div><div class="model-info-content" id="modelInfoContent"></div></section>
+          <section class="panel model-info-panel"><div class="panel-header compact"><div><div class="section-kicker" id="modelInfoKicker">06 / MODEL NOTE</div><h2 id="modelInfoTitle">Model notes &amp; boundaries</h2></div></div><div class="model-info-content" id="modelInfoContent"></div></section>
 
-          <footer class="disclaimer"><span class="disclaimer-icon" aria-hidden="true">!</span><span id="disclaimerText">本模型仅作为临床辅助评估工具，用于提示相关疾病或病理类型的可能性，不能作为确诊或排除诊断的唯一依据。疾病确诊仍需结合患者病史、临床表现、实验室及影像学检查，必要时依据肾活检及病理结果明确诊断。</span></footer>
+          <footer class="disclaimer"><span class="disclaimer-icon" aria-hidden="true">!</span><span id="disclaimerText">This model is a clinical support tool for estimating disease or pathology likelihood. It must not be used as the sole basis for diagnosis or exclusion. Final assessment should integrate history, examination, laboratory and imaging findings, and kidney biopsy when indicated.</span></footer>
           </div>
         </main>
       </div>
     </div>
-    <script src="app.js?v=20260828-9"></script>
+    <script src="app.js?v=20260830-4"></script>
   </body>
 </html>
