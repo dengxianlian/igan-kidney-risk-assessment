@@ -67,12 +67,12 @@ button { cursor: pointer; }
 .sidebar-info p { margin: 5px 0 0; color: var(--muted); font-size: 10px; line-height: 1.55; }
 .sidebar-footer { margin: auto 12px 0; padding-top: 24px; color: #a4b4b8; font-size: 10px; }
 
-.main-content { width: 100%; max-width: 1450px; margin: 0 auto; padding: 27px 40px 44px; }
+.main-content { width: 100%; max-width: 1450px; min-width: 0; flex: 1 1 auto; margin: 0 auto; padding: 27px 40px 44px; }
 .hero-band { min-height: 240px; padding: 35px 42px; color: #fff; background: var(--teal-dark); border-radius: 13px; display: flex; align-items: center; justify-content: space-between; overflow: hidden; position: relative; box-shadow: 0 16px 30px rgba(4, 69, 71, .12); }
 .hero-band::before { content: ""; position: absolute; inset: 0; opacity: .24; background-image: radial-gradient(circle at 80% 20%, rgba(136, 220, 212, .26) 0 1px, transparent 1.5px), radial-gradient(circle at 60% 80%, rgba(136, 220, 212, .2) 0 1px, transparent 1.5px); background-size: 21px 21px, 31px 31px; }
 .hero-copy { max-width: 690px; position: relative; z-index: 1; }
 .hero-kicker { color: #a7d9d7; font-size: 10px; font-weight: 800; letter-spacing: .14em; }
-.hero-band h1 { margin: 12px 0 9px; font-size: 37px; line-height: 1.08; letter-spacing: -.025em; }
+.hero-band h1 { margin: 12px 0 9px; font-size: 37px; line-height: 1.08; letter-spacing: 0; }
 .hero-band p { max-width: 560px; color: #cae6e4; font-size: 14px; line-height: 1.6; }
 .hero-meta { display: flex; gap: 24px; margin-top: 25px; }
 .hero-meta-item { display: inline-flex; align-items: center; gap: 8px; color: #d9efee; font-size: 10px; }
@@ -118,7 +118,7 @@ button { cursor: pointer; }
 .breadcrumb { color: var(--muted); font-size: 10px; margin-bottom: 9px; }
 .breadcrumb span { padding: 0 6px; color: #b4c3c7; }
 .heading-line { display: flex; align-items: center; flex-wrap: wrap; gap: 15px; row-gap: 8px; }
-.heading-line h2 { font-size: 22px; letter-spacing: -.02em; }
+.heading-line h2 { font-size: 22px; letter-spacing: 0; }
 .heading-line .model-chip { margin-left: 0; }
 .page-heading p { margin-top: 7px; color: var(--ink-soft); font-size: 12px; }
 .model-chip { padding: 9px 15px; color: #075f68; background: #d9f5f0; border: 1px solid #75cfc6; border-radius: 999px; box-shadow: 0 5px 14px rgba(13, 125, 123, .14); font-size: 12px; font-weight: 850; letter-spacing: .02em; white-space: nowrap; }
@@ -160,7 +160,7 @@ button { cursor: pointer; }
 .probability-ring { --probability: 96%; width: 148px; height: 148px; display: grid; place-items: center; flex: none; position: relative; border-radius: 50%; background: conic-gradient(var(--coral) var(--probability), #e7eeef 0); }
 .probability-ring::before { content: ""; position: absolute; inset: 8px; background: #fff; border-radius: 50%; }
 .ring-inner { position: relative; z-index: 1; text-align: center; }
-.ring-value { display: block; color: var(--coral); font-size: 27px; font-weight: 850; line-height: 1; letter-spacing: -.04em; }
+.ring-value { display: block; color: var(--coral); font-size: 27px; font-weight: 850; line-height: 1; letter-spacing: 0; }
 .ring-caption { display: block; margin-top: 7px; color: var(--muted); font-size: 9px; }
 .risk-label { color: var(--muted); font-size: 9px; letter-spacing: .12em; }
 .risk-title { margin-top: 4px; color: var(--coral); font-size: 24px; font-weight: 850; line-height: 1.2; }
@@ -173,7 +173,10 @@ button { cursor: pointer; }
 .risk-scale-track { height: 8px; display: flex; overflow: hidden; border-radius: 999px; }
 .risk-scale-track span:nth-child(1) { width: 15%; background: #77c887; }.risk-scale-track span:nth-child(2) { width: 25%; background: #b5dc9d; }.risk-scale-track span:nth-child(3) { width: 30%; background: #efd86b; }.risk-scale-track span:nth-child(4) { width: 20%; background: #f2a06b; }.risk-scale-track span:nth-child(5) { width: 10%; background: #d85b61; }
 .risk-scale-marker { position: absolute; top: 6px; width: 2px; height: 26px; transform: translateX(-50%); }.risk-scale-marker::after { content: ""; position: absolute; top: -4px; left: -4px; border: 4px solid transparent; border-top-color: currentColor; }
-.risk-scale-labels { display: flex; justify-content: space-between; margin-top: 8px; color: var(--muted); font-size: 9px; }
+.risk-scale-labels { position: relative; height: 14px; margin-top: 8px; color: var(--muted); font-size: 9px; }
+.risk-scale-labels span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.risk-scale-labels span:first-child { transform: none; }
+.risk-scale-labels span:last-child { transform: translateX(-100%); }
 .advice-callout { margin-top: 20px; padding: 12px 13px; color: var(--coral-dark); background: #fff1ef; border-left: 4px solid var(--coral); border-radius: 0 6px 6px 0; font-size: 13px; font-weight: 800; line-height: 1.45; }
 .advice-body { min-height: 114px; padding: 15px 2px 13px; color: var(--ink-soft); font-size: 11px; line-height: 1.72; }
 .advice-note { display: flex; align-items: flex-start; gap: 7px; padding-top: 11px; color: #8c7137; border-top: 1px solid var(--line); font-size: 9px; line-height: 1.5; }.advice-note span:first-child { width: 15px; height: 15px; display: inline-grid; place-items: center; flex: none; color: #a47720; border: 1px solid #dfbd6d; border-radius: 50%; font-size: 9px; font-weight: 850; }
@@ -182,7 +185,7 @@ button { cursor: pointer; }
 .nomogram-panel { margin-top: 18px; padding: 22px 24px 16px; }
 .nomogram-header { align-items: end; }.nomogram-header p, .explanation-header p { margin-top: 7px; color: var(--muted); font-size: 10px; line-height: 1.5; }
 .nomogram-legend, .explanation-legend { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 9px; white-space: nowrap; }.explanation-legend { align-self: end; }
-.legend-dot { width: 8px; height: 8px; display: inline-block; margin-left: 10px; border-radius: 50%; }.legend-dot:first-child { margin-left: 0; }.legend-dot.teal { background: var(--teal); }.legend-dot.coral { background: var(--coral); }.legend-dot.blue { background: var(--blue); }
+.legend-dot { width: 8px; height: 8px; display: inline-block; margin-left: 10px; border-radius: 50%; }.legend-dot:first-child { margin-left: 0; }.legend-dot.teal { background: var(--teal); }.legend-dot.coral, .legend-dot.positive { background: var(--coral); }.legend-dot.blue, .legend-dot.negative { background: #2e9d72; }
 .nomogram-scroll, .explanation-scroll { overflow-x: auto; margin: 17px -4px 0; padding: 0 4px 3px; }
 #nomogram { width: 100%; min-width: 780px; height: auto; display: block; }.nomogram-source { margin-top: 10px; padding-top: 10px; color: var(--muted); border-top: 1px solid var(--line); font-size: 9px; }
 .nomogram-tier-key { display: flex; flex-wrap: wrap; gap: 7px 15px; margin-top: 9px; color: var(--muted); font-size: 9px; }
@@ -196,4 +199,149 @@ button { cursor: pointer; }
 @media (max-width: 1050px) { .sidebar { width: 210px; flex-basis: 210px; }.main-content { padding: 24px 25px 38px; }.input-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }.kidney-illustration { margin-right: 0; transform: scale(.88); transform-origin: right center; } }
 @media (max-width: 760px) { .topbar { height: 62px; padding: 0 15px; }.brand-subtitle, .offline-pill { display: none; }.export-button { padding: 8px 10px; }.workspace { display: block; }.sidebar { width: 100%; padding: 12px 13px 9px; border-right: 0; border-bottom: 1px solid var(--line); }.sidebar-heading { padding: 0 2px 9px; }.model-list { display: flex; gap: 7px; overflow-x: auto; padding-bottom: 2px; }.model-button { min-width: 180px; padding: 10px; }.sidebar-divider, .sidebar-info, .sidebar-footer { display: none; }.main-content { padding: 15px 13px 27px; }.hero-band { min-height: 250px; padding: 28px 24px; border-radius: 10px; }.hero-band h1 { font-size: 29px; }.hero-band p { font-size: 12px; }.hero-meta { gap: 12px; margin-top: 21px; flex-wrap: wrap; row-gap: 10px; }.hero-meta-item { font-size: 9px; }.kidney-illustration { position: absolute; right: -45px; bottom: -20px; opacity: .55; transform: scale(.65); }.page-heading { padding: 20px 2px 15px; }.heading-line h2 { min-width: 0; font-size: 18px; overflow-wrap: anywhere; }.heading-line .model-chip { max-width: 100%; padding: 7px 10px; font-size: 10px; white-space: normal; }.page-heading p { font-size: 10px; line-height: 1.5; }.input-panel, .result-panel, .advice-panel, .nomogram-panel, .explanation-panel, .model-info-panel { padding: 18px 16px 14px; }.input-grid, .results-grid { grid-template-columns: 1fr; }.input-actions { flex-direction: column; align-items: stretch; gap: 9px; }.run-button { width: 100%; }.formula-strip { flex-direction: column; align-items: flex-start; gap: 5px; }.result-main { gap: 16px; }.probability-ring { width: 118px; height: 118px; }.ring-value { font-size: 21px; }.risk-title { font-size: 20px; overflow-wrap: anywhere; }.risk-interpretation, .advice-callout, .advice-body, .advice-note, .disclaimer { font-size: 10px; overflow-wrap: anywhere; }.result-summary, .model-info-content, .model-info-content dt, .model-info-content dd { min-width: 0; overflow-wrap: anywhere; }.score-pair { gap: 16px; margin-top: 11px; }.nomogram-legend, .explanation-legend { display: none; }.nomogram-header, .panel-header, .chart-block-header { flex-wrap: wrap; }.nomogram-header p, .explanation-header p { line-height: 1.55; }.chart-block-header h3 { font-size: 11px; }.explanation-scroll svg { min-width: 620px; }.model-info-content dl { grid-template-columns: minmax(0, 76px) minmax(0, 1fr); }.input-validation { margin-top: 5px; }.validation-message { text-align: left; } }
 @media (max-width: 420px) { .topbar { padding: 0 10px; }.topbar-actions { gap: 6px; flex-shrink: 0; }.brand-lockup { flex: 1 1 auto; min-width: 0; }.brand-name { overflow-wrap: anywhere; }.language-toggle { width: 78px; min-width: 78px; flex: 0 0 78px; padding-left: 7px; padding-right: 7px; font-size: 10px; }.export-button { width: 34px; height: 34px; flex: 0 0 34px; padding: 0; }.export-button #exportLabel { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; } }
+
+/* Keep the information hierarchy compact while preserving comfortable reading sizes. */
+@media (min-width: 761px) {
+  .brand-name { font-size: 18px; }
+  .brand-subtitle { font-size: 11px; }
+  .offline-pill, .language-toggle, .export-button { font-size: 12px; }
+  .eyebrow, .model-count { font-size: 11px; }
+  .model-button strong { font-size: 13px; line-height: 1.2; }
+  .model-button small { margin-top: 3px; font-size: 11px; line-height: 1.3; }
+  .sidebar-info strong { font-size: 12px; }
+  .sidebar-info p { font-size: 11px; line-height: 1.45; }
+  .sidebar-footer { font-size: 11px; }
+  .main-content { padding: 23px 34px 38px; }
+  .hero-band { min-height: 226px; padding: 30px 36px; }
+  .hero-kicker { font-size: 11px; }
+  .hero-band p { font-size: 15px; line-height: 1.45; }
+  .hero-meta { gap: 20px; margin-top: 20px; }
+  .hero-meta-item { font-size: 11px; }
+  .page-heading { padding: 20px 3px 13px; }
+  .breadcrumb { margin-bottom: 6px; font-size: 11px; }
+  .heading-line { gap: 12px; row-gap: 6px; }
+  .heading-line h2 { font-size: 24px; }
+  .page-heading p { margin-top: 5px; font-size: 13px; line-height: 1.45; }
+  .model-chip { padding: 8px 13px; font-size: 13px; }
+  .section-kicker { margin-bottom: 4px; font-size: 10px; }
+  .panel h2 { font-size: 18px; line-height: 1.2; }
+  .input-panel { padding: 20px 23px 14px; }
+  .completion-status { padding: 5px 9px; font-size: 11px; }
+  .formula-strip { gap: 10px; margin-top: 14px; padding: 8px 10px; }
+  .formula-label { font-size: 10px; }
+  .formula-strip code { font-size: 11px; }
+  .input-grid { gap: 12px; margin-top: 16px; }
+  .input-actions { gap: 11px; margin-top: 16px; }
+  .run-button { font-size: 12px; }
+  .run-hint { font-size: 11px; line-height: 1.35; }
+  .field-label { margin-bottom: 5px; }
+  .field-label label { font-size: 12px; }
+  .field-unit { font-size: 10px; }
+  .field-control input, .field-control select { height: 40px; }
+  .field-hint { margin-top: 4px; font-size: 10px; }
+  .input-validation { margin-top: 5px; font-size: 10px; }
+  .results-grid { gap: 14px; margin-top: 14px; }
+  .result-panel, .advice-panel { padding: 19px 21px 15px; }
+  .live-indicator { font-size: 11px; }
+  .result-main { gap: 22px; min-height: 160px; padding: 13px 0 10px; }
+  .ring-caption, .risk-label, .score-pair span { font-size: 10px; }
+  .ring-caption { margin-top: 5px; }
+  .risk-title { margin-top: 3px; }
+  .risk-interpretation { margin-top: 5px; font-size: 13px; line-height: 1.45; }
+  .score-pair { gap: 24px; margin-top: 12px; }
+  .score-pair div { gap: 3px; }
+  .score-pair strong { font-size: 15px; }
+  .risk-scale { padding-top: 15px; }
+  .risk-scale-labels { height: 13px; margin-top: 6px; font-size: 10px; }
+  .advice-callout { margin-top: 14px; padding: 10px 12px; font-size: 14px; line-height: 1.35; }
+  .advice-body { min-height: 100px; padding: 12px 2px 10px; font-size: 12px; line-height: 1.5; }
+  .advice-note { gap: 7px; padding-top: 9px; font-size: 10px; line-height: 1.4; }
+  .nomogram-panel { margin-top: 14px; padding: 19px 21px 14px; }
+  .nomogram-header p, .explanation-header p { margin-top: 5px; font-size: 11px; line-height: 1.4; }
+  .nomogram-legend, .explanation-legend { font-size: 10px; }
+  .nomogram-scroll { margin-top: 13px; }
+  .nomogram-source { margin-top: 8px; padding-top: 8px; font-size: 10px; }
+  .nomogram-tier-key { gap: 6px 13px; margin-top: 7px; font-size: 10px; }
+  .explanation-panel { margin-top: 14px; padding: 19px 21px 15px; }
+  .explanation-header h2 { font-size: 18px; }
+  .chart-block { margin-top: 14px; padding-top: 12px; }
+  .chart-block:first-of-type { margin-top: 12px; }
+  .chart-block-header { gap: 10px; }
+  .chart-block-header h3 { font-size: 13px; }
+  .chart-block-header span { font-size: 10px; }
+  .explanation-scroll { margin-top: 8px; }
+  .model-info-panel { margin-top: 14px; padding: 19px 21px; }
+  .model-info-content { margin-top: 12px; font-size: 11px; line-height: 1.5; }
+  .model-info-content dl { gap: 6px 12px; }
+  .model-info-content .model-formula { margin-top: 10px; padding: 9px 10px; font-size: 10px; line-height: 1.5; }
+  .disclaimer { margin-top: 14px; padding: 10px 12px; font-size: 10px; line-height: 1.5; }
+}
+
+@media (max-width: 760px) {
+  .eyebrow, .model-count { font-size: 10px; }
+  .model-button strong { font-size: 12px; line-height: 1.2; }
+  .model-button small { margin-top: 3px; font-size: 10px; line-height: 1.3; }
+  .main-content { padding: 13px 12px 22px; }
+  .hero-band { min-height: 238px; padding: 25px 21px; }
+  .hero-band p { font-size: 13px; line-height: 1.45; }
+  .hero-meta { margin-top: 18px; }
+  .hero-meta-item { font-size: 10px; }
+  .page-heading { padding: 16px 2px 12px; }
+  .breadcrumb { margin-bottom: 6px; font-size: 10px; }
+  .heading-line { gap: 10px; row-gap: 6px; }
+  .heading-line h2 { font-size: 19px; }
+  .page-heading p { margin-top: 5px; font-size: 11px; line-height: 1.4; }
+  .model-chip { padding: 7px 10px; font-size: 11px; }
+  .section-kicker { margin-bottom: 4px; font-size: 10px; }
+  .panel h2 { font-size: 17px; line-height: 1.2; }
+  .input-panel, .result-panel, .advice-panel, .nomogram-panel, .explanation-panel, .model-info-panel { padding: 16px 14px 12px; }
+  .completion-status { padding: 5px 9px; font-size: 10px; }
+  .formula-strip { margin-top: 13px; padding: 8px 10px; }
+  .input-grid { gap: 11px; margin-top: 15px; }
+  .input-actions { margin-top: 15px; }
+  .run-hint { font-size: 11px; line-height: 1.4; }
+  .field-label { margin-bottom: 5px; }
+  .field-label label { font-size: 12px; }
+  .field-unit { font-size: 10px; }
+  .field-control input, .field-control select { height: 40px; }
+  .field-hint { margin-top: 4px; font-size: 10px; }
+  .input-validation { font-size: 10px; }
+  .results-grid { gap: 12px; margin-top: 12px; }
+  .result-main { gap: 14px; min-height: 150px; padding: 11px 0 9px; }
+  .ring-caption, .risk-label, .score-pair span { font-size: 10px; }
+  .risk-title { font-size: 21px; }
+  .risk-interpretation { font-size: 11px; line-height: 1.45; }
+  .score-pair { margin-top: 10px; }
+  .advice-callout { margin-top: 12px; padding: 10px 11px; font-size: 12px; line-height: 1.4; }
+  .advice-body { min-height: 95px; padding: 11px 2px 9px; font-size: 11px; line-height: 1.5; }
+  .advice-note { padding-top: 8px; font-size: 10px; line-height: 1.4; }
+  .nomogram-panel, .explanation-panel, .model-info-panel { margin-top: 12px; }
+  .nomogram-header p, .explanation-header p { margin-top: 5px; font-size: 10px; line-height: 1.45; }
+  .nomogram-scroll { margin-top: 11px; }
+  .nomogram-source { margin-top: 7px; padding-top: 7px; font-size: 10px; }
+  .nomogram-tier-key { margin-top: 6px; font-size: 10px; }
+  .chart-block { margin-top: 12px; padding-top: 11px; }
+  .chart-block:first-of-type { margin-top: 10px; }
+  .chart-block-header h3 { font-size: 12px; }
+  .chart-block-header span { font-size: 10px; }
+  .explanation-scroll { margin-top: 7px; }
+  .model-info-content { margin-top: 11px; font-size: 11px; line-height: 1.5; }
+  .model-info-content dl { gap: 6px 10px; }
+  .model-info-content .model-formula { margin-top: 9px; padding: 8px 9px; font-size: 10px; line-height: 1.5; }
+  .disclaimer { margin-top: 12px; padding: 10px 11px; font-size: 10px; line-height: 1.5; }
+}
+
+@media (min-width: 761px) and (max-width: 900px) {
+  .sidebar { width: 190px; flex-basis: 190px; }
+  .main-content { padding-left: 20px; padding-right: 20px; }
+  .hero-band { min-height: 210px; padding: 25px 26px; }
+  .hero-copy { min-width: 0; }
+  .hero-band h1 { font-size: 31px; }
+  .hero-band p { max-width: 330px; font-size: 13px; line-height: 1.4; }
+  .hero-meta { gap: 10px; margin-top: 15px; flex-wrap: wrap; row-gap: 7px; }
+  .hero-meta-item { font-size: 10px; }
+  .kidney-illustration { width: 240px; height: 156px; margin-right: -8px; transform: none; }
+  .results-grid { grid-template-columns: 1fr; }
+}
+
 @media print { body { background: #fff; }.topbar { position: static; box-shadow: none; }.sidebar, .topbar-actions, .input-validation, .disclaimer { display: none; }.workspace { display: block; }.main-content { max-width: none; padding: 20px; }.hero-band { box-shadow: none; }.panel { box-shadow: none; break-inside: avoid; } }

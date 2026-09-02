@@ -11,6 +11,11 @@
     c3: { min: 0.52, max: 2.48 }
   };
 
+  // Keep published decimal coefficients as text before converting to JavaScript
+  // numbers. This makes the precision in the model definition explicit and
+  // prevents a later formatting change from silently truncating a coefficient.
+  const coefficient = (decimalText) => Number(decimalText);
+
   const I18N = {
     zh: {
       brandSubtitle: "肾病风险评估工作台", offline: "离线计算", export: "导出结果", resetTitle: "重置当前输入", languageLabel: "切换语言",
@@ -51,7 +56,7 @@
       inputKicker: "01 / INPUT", inputTitle: "Result input", outputKicker: "02 / OUTPUT", resultTitle: "Model output", actionKicker: "03 / ACTION", liveLabel: "Live update", probabilityCaption: "Predicted probability", riskLabel: "Risk tier", aLabel: "Linear predictor A", modelLabel: "Model",
       inputHint: "Enter continuous variables as measured; sex is binary coded.", adviceTitle: "Next-step clinical advice", adviceNote: "For clinical support only; this model does not replace medical diagnosis.",
       nomogramKicker: "04 / NOMOGRAM", nomogramTitle: "Risk nomogram", nomogramIntro: "Variable scales use observed modeling-data ranges; total points and probability share one linear-predictor mapping.", legendCurrent: "Current value", legendThreshold: "Risk threshold", nomogramSource: "Variable scales use observed modeling-data ranges.",
-      explanationKicker: "05 / EXPLANATION", explanationTitle: "Variable contribution & distribution", explanationIntro: "Bar and Scatter are shown separately, with the same feature order as the reference plots.", barPlotTitle: "Bar · Current case contribution", scatterPlotTitle: "Scatter · Contribution distribution", scatterPlotNote: "Linear contribution", legendCase: "Current case", legendLow: "Low value", legendHigh: "High value",
+      explanationKicker: "05 / EXPLANATION", explanationTitle: "Variable contribution & distribution", explanationIntro: "Bar and Scatter are shown separately, ranked by the current case's absolute contribution.", barPlotTitle: "Bar · Current case contribution", scatterPlotTitle: "Scatter · Contribution distribution", scatterPlotNote: "Linear contribution", legendCase: "Current case", legendLow: "Negative contribution", legendHigh: "Positive contribution",
       modelInfoKicker: "06 / MODEL NOTE", modelInfoTitle: "Model notes & boundaries", disclaimer: "This model is a clinical support tool for estimating disease or pathology likelihood. It must not be used as the sole basis for diagnosis or exclusion. Final assessment should integrate history, examination, laboratory and imaging findings, and kidney biopsy when indicated.",
       invalid: "Complete all fields and check the input ranges before running the model.", filled: "Filled", pending: "Check inputs", runLabel: "Run model", runHint: "Complete every field, then run the model to reveal the results.", range: "Range", points: "pts", total: "Total points", riskProbability: "Risk probability", pointsAxis: "POINTS", barAxis: "Contribution magnitude", barFooter: "Contribution magnitude for the current case", scatterAxis: "Linear contribution", featureLabel: "FEATURE", lowValue: "Low", highValue: "High", negativeCaption: "Negative ← lowers model output", positiveCaption: "Positive → raises model output", scoreMapping: "Total points and probability share the linear-predictor mapping", selectPlaceholder: "Select", sexHint: "Male = 1 · Female = 0", intendedUse: "Intended use", population: "Population", inputs: "Inputs", runtime: "Runtime"
     },
@@ -64,15 +69,15 @@
       inputKicker: "01 / 输入", inputTitle: "结果输入", outputKicker: "02 / 输出", resultTitle: "模型预测结果", actionKicker: "03 / 建议", liveLabel: "实时更新", probabilityCaption: "预测概率", riskLabel: "风险等级", aLabel: "线性预测值 A", modelLabel: "模型",
       inputHint: "连续变量按原始测量值代入；性别为二分类变量。", adviceTitle: "下一步诊疗建议", adviceNote: "模型结果仅作临床辅助评估，不能替代医生诊断。",
       nomogramKicker: "04 / 列线图", nomogramTitle: "风险等级列线图", nomogramIntro: "各变量按建模数据观察范围设定标尺；总分与概率使用同一线性预测值映射。", legendCurrent: "当前点位", legendThreshold: "风险阈值", nomogramSource: "变量标尺依据建模数据观察范围。",
-      explanationKicker: "05 / 解释", explanationTitle: "变量贡献与分布", explanationIntro: "Bar 与 Scatter 分开展示，项目顺序与参考图一致。", barPlotTitle: "Bar · 当前病例贡献", scatterPlotTitle: "Scatter · 变量贡献分布", scatterPlotNote: "线性贡献", legendCase: "当前病例", legendLow: "低值", legendHigh: "高值",
+      explanationKicker: "05 / 解释", explanationTitle: "变量贡献与分布", explanationIntro: "Bar 与 Scatter 分开展示，按当前病例绝对贡献度从高到低排列。", barPlotTitle: "Bar · 当前病例贡献", scatterPlotTitle: "Scatter · 变量贡献分布", scatterPlotNote: "线性贡献", legendCase: "当前病例", legendLow: "负向贡献", legendHigh: "正向贡献",
       modelInfoKicker: "06 / 模型说明", modelInfoTitle: "模型信息与使用边界", disclaimer: "本模型仅作为临床辅助评估工具，用于提示相关疾病或病理类型的可能性，不能作为确诊或排除诊断的唯一依据。疾病确诊仍需结合患者病史、临床表现、实验室及影像学检查，必要时依据肾活检及病理结果明确诊断。",
       invalid: "请填写全部项目，并检查输入范围后再运行模型。", filled: "已填", pending: "待检查输入", runLabel: "运行模型", runHint: "填写全部项目后点击运行模型；结果将在运行后展开。", range: "范围", points: "分", total: "总分", riskProbability: "风险概率", pointsAxis: "POINTS / 分值", barAxis: "贡献幅度", barFooter: "当前病例贡献幅度（柱越长表示影响越大）", scatterAxis: "线性贡献", featureLabel: "变量", lowValue: "低值", highValue: "高值", negativeCaption: "负向 ← 降低模型输出", positiveCaption: "提高模型输出 → 正向", scoreMapping: "总分与概率共用线性预测值映射", selectPlaceholder: "请选择", sexHint: "男 = 1 · 女 = 0", intendedUse: "预期用途", population: "适用人群", inputs: "输入变量", runtime: "运行方式"
     },
     de: {
-      brandName: "ShenYan AI", brandSubtitle: "Arbeitsbereich zur Nierenrisikobewertung", modelSuite: "MODELLSUITE", modelCount: "3 Modelle", navModel: "Modellauswahl", sidebarFooter: "v0.3 · klinischer Offline-Prototyp", offline: "Offline-Berechnung", export: "Ergebnis exportieren", resetTitle: "Aktuelle Eingaben zurücksetzen", languageLabel: "Sprache", privacyTitle: "Daten bleiben auf dem Gerät", privacyText: "Es werden keine Patientendaten hochgeladen. Eingaben werden beim Schließen nicht gespeichert.", heroKicker: "KLINISCHE NIERENHILFE", pageTitle: "IgAN-Risikobewertung", pageIntro: "Schlüsselbefunde mit einem interpretierbaren logistischen Regressionsmodell in verständliche Risikosignale übersetzen.", heroMetaOne: "Modell wählen", heroMetaTwo: "Befunde eingeben", heroMetaThree: "Empfehlung prüfen", breadcrumbOne: "Klinische Unterstützung", breadcrumbTwo: "Modellberechnung", sectionHeading: "Arbeitsbereich für Patientenrisiken", headingIntro: "Laborbefunde eingeben und Wahrscheinlichkeit, Variablenbeitrag und nächste Schritte prüfen.", formulaLabel: "Aktives Modell", inputKicker: "01 / EINGABE", inputTitle: "Befundeingabe", outputKicker: "02 / AUSGABE", resultTitle: "Modellergebnis", actionKicker: "03 / AKTION", liveLabel: "Live-Aktualisierung", probabilityCaption: "Vorhergesagte Wahrscheinlichkeit", riskLabel: "Risikostufe", aLabel: "Linearer Prädiktor A", modelLabel: "Modell", inputHint: "Kontinuierliche Werte wie gemessen eingeben; Geschlecht ist binär codiert.", adviceTitle: "Nächste klinische Schritte", adviceNote: "Nur zur klinischen Unterstützung; ersetzt keine ärztliche Diagnose.", nomogramKicker: "04 / NOMOGRAMM", nomogramTitle: "Risiko-Nomogramm", nomogramIntro: "Variablenskalen verwenden beobachtete Modellierungsbereiche; Gesamtpunkte und Wahrscheinlichkeit teilen dieselbe lineare Abbildung.", legendCurrent: "Aktueller Wert", legendThreshold: "Risikoschwelle", nomogramSource: "Variablenskalen basieren auf beobachteten Modellierungsbereichen.", explanationKicker: "05 / ERKLÄRUNG", explanationTitle: "Variablenbeitrag und Verteilung", explanationIntro: "Balken und Scatter werden getrennt mit derselben Merkmalsreihenfolge gezeigt.", barPlotTitle: "Balken · Beitrag des aktuellen Falls", scatterPlotTitle: "Scatter · Beitragsverteilung", scatterPlotNote: "Linearer Beitrag", legendCase: "Aktueller Fall", legendLow: "Niedriger Wert", legendHigh: "Hoher Wert", modelInfoKicker: "06 / MODELLHINWEIS", modelInfoTitle: "Modellhinweise und Grenzen", disclaimer: "Dieses Modell unterstützt die klinische Einschätzung der Wahrscheinlichkeit einer Erkrankung oder eines pathologischen Befunds. Es darf nicht als alleinige Grundlage für Diagnose oder Ausschluss verwendet werden. Die abschließende Beurteilung muss Anamnese, Untersuchung, Labor, Bildgebung und bei Bedarf eine Nierenbiopsie einbeziehen.", invalid: "Alle Felder ausfüllen und Wertebereiche prüfen, bevor das Modell ausgeführt wird.", filled: "Ausgefüllt", pending: "Eingaben prüfen", runLabel: "Modell ausführen", runHint: "Alle Felder ausfüllen und anschließend das Modell ausführen.", range: "Bereich", points: "Pkt.", total: "Gesamtpunkte", riskProbability: "Risikowahrscheinlichkeit", pointsAxis: "PUNKTE", barAxis: "Beitragsstärke", barFooter: "Beitragsstärke für den aktuellen Fall", scatterAxis: "Linearer Beitrag", featureLabel: "MERKMAL", lowValue: "Niedrig", highValue: "Hoch", negativeCaption: "Negativ ← senkt den Modellausgabewert", positiveCaption: "Erhöht den Modellausgabewert → positiv", scoreMapping: "Gesamtpunkte und Wahrscheinlichkeit teilen dieselbe lineare Abbildung", selectPlaceholder: "Auswählen", sexHint: "Männlich = 1 · Weiblich = 0", intendedUse: "Zweckbestimmung", population: "Zielgruppe", inputs: "Eingaben", runtime: "Ausführung"
+      brandName: "ShenYan AI", brandSubtitle: "Arbeitsbereich zur Nierenrisikobewertung", modelSuite: "MODELLSUITE", modelCount: "3 Modelle", navModel: "Modellauswahl", sidebarFooter: "v0.3 · klinischer Offline-Prototyp", offline: "Offline-Berechnung", export: "Ergebnis exportieren", resetTitle: "Aktuelle Eingaben zurücksetzen", languageLabel: "Sprache", privacyTitle: "Daten bleiben auf dem Gerät", privacyText: "Es werden keine Patientendaten hochgeladen. Eingaben werden beim Schließen nicht gespeichert.", heroKicker: "KLINISCHE NIERENHILFE", pageTitle: "IgAN-Risikobewertung", pageIntro: "Schlüsselbefunde mit einem interpretierbaren logistischen Regressionsmodell in verständliche Risikosignale übersetzen.", heroMetaOne: "Modell wählen", heroMetaTwo: "Befunde eingeben", heroMetaThree: "Empfehlung prüfen", breadcrumbOne: "Klinische Unterstützung", breadcrumbTwo: "Modellberechnung", sectionHeading: "Arbeitsbereich für Patientenrisiken", headingIntro: "Laborbefunde eingeben und Wahrscheinlichkeit, Variablenbeitrag und nächste Schritte prüfen.", formulaLabel: "Aktives Modell", inputKicker: "01 / EINGABE", inputTitle: "Befundeingabe", outputKicker: "02 / AUSGABE", resultTitle: "Modellergebnis", actionKicker: "03 / AKTION", liveLabel: "Live-Aktualisierung", probabilityCaption: "Vorhergesagte Wahrscheinlichkeit", riskLabel: "Risikostufe", aLabel: "Linearer Prädiktor A", modelLabel: "Modell", inputHint: "Kontinuierliche Werte wie gemessen eingeben; Geschlecht ist binär codiert.", adviceTitle: "Nächste klinische Schritte", adviceNote: "Nur zur klinischen Unterstützung; ersetzt keine ärztliche Diagnose.", nomogramKicker: "04 / NOMOGRAMM", nomogramTitle: "Risiko-Nomogramm", nomogramIntro: "Variablenskalen verwenden beobachtete Modellierungsbereiche; Gesamtpunkte und Wahrscheinlichkeit teilen dieselbe lineare Abbildung.", legendCurrent: "Aktueller Wert", legendThreshold: "Risikoschwelle", nomogramSource: "Variablenskalen basieren auf beobachteten Modellierungsbereichen.", explanationKicker: "05 / ERKLÄRUNG", explanationTitle: "Variablenbeitrag und Verteilung", explanationIntro: "Balken und Scatter werden getrennt mit derselben Merkmalsreihenfolge gezeigt.", barPlotTitle: "Balken · Beitrag des aktuellen Falls", scatterPlotTitle: "Scatter · Beitragsverteilung", scatterPlotNote: "Linearer Beitrag", legendCase: "Aktueller Fall", legendLow: "Negativer Beitrag", legendHigh: "Positiver Beitrag", modelInfoKicker: "06 / MODELLHINWEIS", modelInfoTitle: "Modellhinweise und Grenzen", disclaimer: "Dieses Modell unterstützt die klinische Einschätzung der Wahrscheinlichkeit einer Erkrankung oder eines pathologischen Befunds. Es darf nicht als alleinige Grundlage für Diagnose oder Ausschluss verwendet werden. Die abschließende Beurteilung muss Anamnese, Untersuchung, Labor, Bildgebung und bei Bedarf eine Nierenbiopsie einbeziehen.", invalid: "Alle Felder ausfüllen und Wertebereiche prüfen, bevor das Modell ausgeführt wird.", filled: "Ausgefüllt", pending: "Eingaben prüfen", runLabel: "Modell ausführen", runHint: "Alle Felder ausfüllen und anschließend das Modell ausführen.", range: "Bereich", points: "Pkt.", total: "Gesamtpunkte", riskProbability: "Risikowahrscheinlichkeit", pointsAxis: "PUNKTE", barAxis: "Beitragsstärke", barFooter: "Beitragsstärke für den aktuellen Fall", scatterAxis: "Linearer Beitrag", featureLabel: "MERKMAL", lowValue: "Niedrig", highValue: "Hoch", negativeCaption: "Negativ ← senkt den Modellausgabewert", positiveCaption: "Erhöht den Modellausgabewert → positiv", scoreMapping: "Gesamtpunkte und Wahrscheinlichkeit teilen dieselbe lineare Abbildung", selectPlaceholder: "Auswählen", sexHint: "Männlich = 1 · Weiblich = 0", intendedUse: "Zweckbestimmung", population: "Zielgruppe", inputs: "Eingaben", runtime: "Ausführung"
     },
     fr: {
-      brandName: "ShenYan AI", brandSubtitle: "Espace d’évaluation du risque rénal", modelSuite: "SUITE DE MODÈLES", modelCount: "3 modèles", navModel: "Sélection du modèle", sidebarFooter: "v0.3 · prototype clinique hors ligne", offline: "Calcul hors ligne", export: "Exporter le résultat", resetTitle: "Réinitialiser les valeurs", languageLabel: "Langue", privacyTitle: "Les données restent sur l’appareil", privacyText: "Aucune donnée patient n’est envoyée. Les valeurs ne sont pas conservées à la fermeture.", heroKicker: "ASSISTANCE CLINIQUE RÉNALE", pageTitle: "Évaluation du risque d’IgAN", pageIntro: "Transformez les résultats biologiques clés en signaux de risque lisibles grâce à une régression logistique interprétable.", heroMetaOne: "Choisir le modèle", heroMetaTwo: "Saisir les résultats", heroMetaThree: "Lire les conseils", breadcrumbOne: "Assistance clinique", breadcrumbTwo: "Calcul du modèle", sectionHeading: "Espace de travail du risque patient", headingIntro: "Saisissez les résultats pour consulter la probabilité, la contribution des variables et les prochaines étapes.", formulaLabel: "Modèle actif", inputKicker: "01 / SAISIE", inputTitle: "Saisie des résultats", outputKicker: "02 / SORTIE", resultTitle: "Résultat du modèle", actionKicker: "03 / ACTION", liveLabel: "Mise à jour en direct", probabilityCaption: "Probabilité prédite", riskLabel: "Niveau de risque", aLabel: "Prédicteur linéaire A", modelLabel: "Modèle", inputHint: "Saisissez les valeurs continues telles que mesurées ; le sexe est codé en deux catégories.", adviceTitle: "Prochaines étapes cliniques", adviceNote: "Outil d’aide clinique uniquement ; ne remplace pas le diagnostic médical.", nomogramKicker: "04 / NOMOGRAMME", nomogramTitle: "Nomogramme du risque", nomogramIntro: "Les échelles utilisent les plages observées de modélisation ; les points totaux et la probabilité partagent la même correspondance linéaire.", legendCurrent: "Valeur actuelle", legendThreshold: "Seuil de risque", nomogramSource: "Échelles fondées sur les plages observées de modélisation.", explanationKicker: "05 / EXPLICATION", explanationTitle: "Contribution et distribution des variables", explanationIntro: "Les graphiques Bar et Scatter sont séparés et utilisent le même ordre de variables.", barPlotTitle: "Bar · contribution du cas actuel", scatterPlotTitle: "Scatter · distribution des contributions", scatterPlotNote: "Contribution linéaire", legendCase: "Cas actuel", legendLow: "Valeur basse", legendHigh: "Valeur haute", modelInfoKicker: "06 / NOTE DU MODÈLE", modelInfoTitle: "Informations et limites du modèle", disclaimer: "Ce modèle est un outil d’aide clinique pour estimer la probabilité d’une maladie ou d’un type de lésion. Il ne doit pas être utilisé comme seul fondement du diagnostic ou de l’exclusion. L’évaluation finale doit intégrer l’histoire, l’examen, les analyses, l’imagerie et, si nécessaire, la biopsie rénale.", invalid: "Complétez tous les champs et vérifiez les plages avant d’exécuter le modèle.", filled: "Rempli", pending: "Vérifier les valeurs", runLabel: "Exécuter le modèle", runHint: "Complétez chaque champ, puis exécutez le modèle pour afficher les résultats.", range: "Plage", points: "pts", total: "Points totaux", riskProbability: "Probabilité de risque", pointsAxis: "POINTS", barAxis: "Amplitude de contribution", barFooter: "Amplitude de contribution pour le cas actuel", scatterAxis: "Contribution linéaire", featureLabel: "VARIABLE", lowValue: "Bas", highValue: "Haut", negativeCaption: "Négatif ← diminue la sortie du modèle", positiveCaption: "Augmente la sortie du modèle → positif", scoreMapping: "Les points totaux et la probabilité partagent la même correspondance linéaire", selectPlaceholder: "Sélectionner", sexHint: "Homme = 1 · Femme = 0", intendedUse: "Usage prévu", population: "Population cible", inputs: "Variables d’entrée", runtime: "Exécution"
+      brandName: "ShenYan AI", brandSubtitle: "Espace d’évaluation du risque rénal", modelSuite: "SUITE DE MODÈLES", modelCount: "3 modèles", navModel: "Sélection du modèle", sidebarFooter: "v0.3 · prototype clinique hors ligne", offline: "Calcul hors ligne", export: "Exporter le résultat", resetTitle: "Réinitialiser les valeurs", languageLabel: "Langue", privacyTitle: "Les données restent sur l’appareil", privacyText: "Aucune donnée patient n’est envoyée. Les valeurs ne sont pas conservées à la fermeture.", heroKicker: "ASSISTANCE CLINIQUE RÉNALE", pageTitle: "Évaluation du risque d’IgAN", pageIntro: "Transformez les résultats biologiques clés en signaux de risque lisibles grâce à une régression logistique interprétable.", heroMetaOne: "Choisir le modèle", heroMetaTwo: "Saisir les résultats", heroMetaThree: "Lire les conseils", breadcrumbOne: "Assistance clinique", breadcrumbTwo: "Calcul du modèle", sectionHeading: "Espace de travail du risque patient", headingIntro: "Saisissez les résultats pour consulter la probabilité, la contribution des variables et les prochaines étapes.", formulaLabel: "Modèle actif", inputKicker: "01 / SAISIE", inputTitle: "Saisie des résultats", outputKicker: "02 / SORTIE", resultTitle: "Résultat du modèle", actionKicker: "03 / ACTION", liveLabel: "Mise à jour en direct", probabilityCaption: "Probabilité prédite", riskLabel: "Niveau de risque", aLabel: "Prédicteur linéaire A", modelLabel: "Modèle", inputHint: "Saisissez les valeurs continues telles que mesurées ; le sexe est codé en deux catégories.", adviceTitle: "Prochaines étapes cliniques", adviceNote: "Outil d’aide clinique uniquement ; ne remplace pas le diagnostic médical.", nomogramKicker: "04 / NOMOGRAMME", nomogramTitle: "Nomogramme du risque", nomogramIntro: "Les échelles utilisent les plages observées de modélisation ; les points totaux et la probabilité partagent la même correspondance linéaire.", legendCurrent: "Valeur actuelle", legendThreshold: "Seuil de risque", nomogramSource: "Échelles fondées sur les plages observées de modélisation.", explanationKicker: "05 / EXPLICATION", explanationTitle: "Contribution et distribution des variables", explanationIntro: "Les graphiques Bar et Scatter sont séparés et utilisent le même ordre de variables.", barPlotTitle: "Bar · contribution du cas actuel", scatterPlotTitle: "Scatter · distribution des contributions", scatterPlotNote: "Contribution linéaire", legendCase: "Cas actuel", legendLow: "Contribution négative", legendHigh: "Contribution positive", modelInfoKicker: "06 / NOTE DU MODÈLE", modelInfoTitle: "Informations et limites du modèle", disclaimer: "Ce modèle est un outil d’aide clinique pour estimer la probabilité d’une maladie ou d’un type de lésion. Il ne doit pas être utilisé comme seul fondement du diagnostic ou de l’exclusion. L’évaluation finale doit intégrer l’histoire, l’examen, les analyses, l’imagerie et, si nécessaire, la biopsie rénale.", invalid: "Complétez tous les champs et vérifiez les plages avant d’exécuter le modèle.", filled: "Rempli", pending: "Vérifier les valeurs", runLabel: "Exécuter le modèle", runHint: "Complétez chaque champ, puis exécutez le modèle pour afficher les résultats.", range: "Plage", points: "pts", total: "Points totaux", riskProbability: "Probabilité de risque", pointsAxis: "POINTS", barAxis: "Amplitude de contribution", barFooter: "Amplitude de contribution pour le cas actuel", scatterAxis: "Contribution linéaire", featureLabel: "VARIABLE", lowValue: "Bas", highValue: "Haut", negativeCaption: "Négatif ← diminue la sortie du modèle", positiveCaption: "Augmente la sortie du modèle → positif", scoreMapping: "Les points totaux et la probabilité partagent la même correspondance linéaire", selectPlaceholder: "Sélectionner", sexHint: "Homme = 1 · Femme = 0", intendedUse: "Usage prévu", population: "Population cible", inputs: "Variables d’entrée", runtime: "Exécution"
     },
     it: {
       brandName: "ShenYan AI", brandSubtitle: "Area di valutazione del rischio renale", modelSuite: "SUITE DEI MODELLI", modelCount: "3 modelli", navModel: "Selezione del modello", sidebarFooter: "v0.3 · prototipo clinico offline", offline: "Calcolo offline", export: "Esporta risultato", resetTitle: "Reimposta i dati", languageLabel: "Lingua", privacyTitle: "I dati restano sul dispositivo", privacyText: "Nessun dato del paziente viene inviato. Gli inserimenti non vengono salvati alla chiusura.", heroKicker: "SUPPORTO CLINICO RENALE", pageTitle: "Valutazione del rischio IgAN", pageIntro: "Trasforma i principali risultati di laboratorio in segnali di rischio leggibili con un modello di regressione logistica interpretabile.", heroMetaOne: "Scegli modello", heroMetaTwo: "Inserisci risultati", heroMetaThree: "Leggi consigli", breadcrumbOne: "Supporto clinico", breadcrumbTwo: "Calcolo del modello", sectionHeading: "Area di lavoro del rischio paziente", headingIntro: "Inserisci i risultati per consultare probabilità, contributo delle variabili e prossimi passi.", formulaLabel: "Modello attivo", inputKicker: "01 / INPUT", inputTitle: "Inserimento risultati", outputKicker: "02 / OUTPUT", resultTitle: "Risultato del modello", actionKicker: "03 / AZIONE", liveLabel: "Aggiornamento live", probabilityCaption: "Probabilità prevista", riskLabel: "Livello di rischio", aLabel: "Predittore lineare A", modelLabel: "Modello", inputHint: "Inserisci i valori continui come misurati; il sesso è codificato in modo binario.", adviceTitle: "Prossimi passi clinici", adviceNote: "Solo per supporto clinico; non sostituisce la diagnosi medica.", nomogramKicker: "04 / NOMOGRAMMA", nomogramTitle: "Nomogramma del rischio", nomogramIntro: "Le scale usano gli intervalli osservati nei dati di modellazione; punti totali e probabilità condividono la stessa mappatura lineare.", legendCurrent: "Valore attuale", legendThreshold: "Soglia di rischio", nomogramSource: "Scale basate sugli intervalli osservati nei dati di modellazione.", explanationKicker: "05 / SPIEGAZIONE", explanationTitle: "Contributo e distribuzione delle variabili", explanationIntro: "I grafici Bar e Scatter sono separati e mantengono lo stesso ordine delle variabili.", barPlotTitle: "Bar · contributo del caso corrente", scatterPlotTitle: "Scatter · distribuzione dei contributi", scatterPlotNote: "Contributo lineare", legendCase: "Caso corrente", legendLow: "Valore basso", legendHigh: "Valore alto", modelInfoKicker: "06 / NOTA DEL MODELLO", modelInfoTitle: "Informazioni e limiti del modello", disclaimer: "Questo modello supporta la valutazione clinica della probabilità di malattia o di un tipo di lesione. Non deve essere usato come unica base per la diagnosi o l’esclusione. La valutazione finale deve integrare anamnesi, esame, laboratorio, imaging e, quando indicato, biopsia renale.", invalid: "Completa tutti i campi e controlla gli intervalli prima di eseguire il modello.", filled: "Compilati", pending: "Controlla gli input", runLabel: "Esegui modello", runHint: "Completa ogni campo, poi esegui il modello per visualizzare i risultati.", range: "Intervallo", points: "pt", total: "Punti totali", riskProbability: "Probabilità di rischio", pointsAxis: "PUNTI", barAxis: "Ampiezza del contributo", barFooter: "Ampiezza del contributo per il caso corrente", scatterAxis: "Contributo lineare", featureLabel: "VARIABILE", lowValue: "Basso", highValue: "Alto", negativeCaption: "Negativo ← riduce l’uscita del modello", positiveCaption: "Aumenta l’uscita del modello → positivo", scoreMapping: "Punti totali e probabilità condividono la stessa mappatura lineare", selectPlaceholder: "Seleziona", sexHint: "Maschio = 1 · Femmina = 0", intendedUse: "Uso previsto", population: "Popolazione", inputs: "Variabili di input", runtime: "Esecuzione"
@@ -82,6 +87,75 @@
     }
   };
   Object.entries(UI_COPY).forEach(([locale, copy]) => { I18N[locale] = { ...I18N.en, ...copy }; });
+  // The explanation legend describes contribution direction, not raw feature
+  // value magnitude. Keep the wording aligned with the red/green sign key in
+  // every supported locale.
+  const CONTRIBUTION_LEGEND_COPY = {
+    en: ["Negative contribution", "Positive contribution"],
+    zh: ["负向贡献", "正向贡献"],
+    de: ["Negativer Beitrag", "Positiver Beitrag"],
+    fr: ["Contribution négative", "Contribution positive"],
+    it: ["Contributo negativo", "Contributo positivo"],
+    ja: ["負の寄与", "正の寄与"]
+  };
+  Object.entries(CONTRIBUTION_LEGEND_COPY).forEach(([locale, labels]) => {
+    if (UI_COPY[locale]) { UI_COPY[locale].legendLow = labels[0]; UI_COPY[locale].legendHigh = labels[1]; }
+    if (I18N[locale]) { I18N[locale].legendLow = labels[0]; I18N[locale].legendHigh = labels[1]; }
+  });
+  const EXPLANATION_ORDER_COPY = {
+    en: "Bar and Scatter are shown separately, ranked by the current case's absolute contribution.",
+    zh: "Bar 与 Scatter 分开展示，按当前病例绝对贡献度从高到低排列。",
+    de: "Balken und Scatter werden getrennt und nach dem absoluten Beitrag des aktuellen Falls sortiert angezeigt.",
+    fr: "Les graphiques Bar et Scatter sont séparés et classés selon la contribution absolue du cas actuel.",
+    it: "I grafici Bar e Scatter sono separati e ordinati in base al contributo assoluto del caso corrente.",
+    ja: "Bar と Scatter は分けて表示し、現在症例の絶対寄与度の高い順に並べます。"
+  };
+  const POINTS_AXIS_COPY = {
+    en: "CALIBRATED POINTS",
+    zh: "校准总分",
+    de: "KALIBRIERTE PUNKTE",
+    fr: "POINTS CALIBRÉS",
+    it: "PUNTI CALIBRATI",
+    ja: "校正ポイント"
+  };
+  Object.entries(EXPLANATION_ORDER_COPY).forEach(([locale, label]) => {
+    if (UI_COPY[locale]) UI_COPY[locale].explanationIntro = label;
+    if (I18N[locale]) I18N[locale].explanationIntro = label;
+  });
+  Object.entries(POINTS_AXIS_COPY).forEach(([locale, label]) => {
+    if (UI_COPY[locale]) UI_COPY[locale].pointsAxis = label;
+    if (I18N[locale]) I18N[locale].pointsAxis = label;
+  });
+  const NOMOGRAM_MAPPING_COPY = {
+    en: {
+      intro: "Variable scales use observed modeling ranges; the total-point scale is calibrated to the 0–100% probability axis so both markers share one position.",
+      score: "Calibrated total-point ticks align with probability thresholds"
+    },
+    zh: {
+      intro: "各变量按建模数据观察范围设定标尺；总分轴校准到 0–100% 概率轴，使两个标记保持同一位置。",
+      score: "校准后的总分刻度与概率风险阈值对齐"
+    },
+    de: {
+      intro: "Variablenskalen nutzen beobachtete Modellierungsbereiche; die Gesamtpunkteskala ist an die Wahrscheinlichkeitsskala 0–100 % kalibriert, sodass beide Marker dieselbe Position teilen.",
+      score: "Kalibrierte Gesamtpunkt-Ticks sind an die Wahrscheinlichkeitsschwellen ausgerichtet"
+    },
+    fr: {
+      intro: "Les échelles utilisent les plages observées ; l’échelle des points totaux est calibrée sur l’axe de probabilité 0–100 % afin que les deux marqueurs partagent la même position.",
+      score: "Les graduations calibrées des points totaux s’alignent sur les seuils de probabilité"
+    },
+    it: {
+      intro: "Le scale usano gli intervalli osservati; la scala dei punti totali è calibrata sull’asse di probabilità 0–100%, così i due marcatori condividono la stessa posizione.",
+      score: "Le tacche calibrate dei punti totali si allineano alle soglie di probabilità"
+    },
+    ja: {
+      intro: "変数スケールは観測されたモデル範囲を使用し、合計点スケールを0–100%の確率軸に校正して2つのマーカーを同じ位置に揃えます。",
+      score: "校正された合計点目盛りは確率のリスク閾値に対応"
+    }
+  };
+  Object.entries(NOMOGRAM_MAPPING_COPY).forEach(([locale, copy]) => {
+    if (UI_COPY[locale]) { UI_COPY[locale].nomogramIntro = copy.intro; UI_COPY[locale].scoreMapping = copy.score; }
+    if (I18N[locale]) { I18N[locale].nomogramIntro = copy.intro; I18N[locale].scoreMapping = copy.score; }
+  });
 
   const FIELD_COPY = {
     en: { age: ["Age", "years"], sex: ["Sex", ""], alb: ["Albumin", "g/L"], egfr: ["eGFR (creatinine)", "mL/min/1.73m²"], iga: ["Serum IgA", "g/L"], ualpha1mg: ["Urine α1-microglobulin", "mg/L"], protein: ["24-hour urine protein", "g/24 h"], c3: ["Complement C3", "g/L"], ldlc: ["LDL cholesterol", "mmol/L"] },
@@ -159,17 +233,17 @@
 
   const MODEL_DEFS = {
     uBASE: {
-      id: "uBASE", name: "IgAN-uBASE", nameEn: "IgAN-uBASE", subtitle: "基础变量 + 尿标志物", subtitleEn: "Core variables + urinary marker", interpretation: "IgA 肾病", interpretationEn: "IgA nephropathy", intercept: 0.75, importanceOrder: ["age", "alb", "ualpha1mg", "egfr", "iga", "sex"],
-      formula: "A = 0.75 − 0.100897×Age + 0.780017×Sex + 0.119005×ALB − 0.034007×eGFRCr + 1.014081×IgA − 0.025577×U-α1MG",
-      formulaEn: "A = 0.75 − 0.100897×Age + 0.780017×Sex + 0.119005×ALB − 0.034007×eGFRCr + 1.014081×IgA − 0.025577×U-α1MG",
+      id: "uBASE", name: "IgAN-uBASE", nameEn: "IgAN-uBASE", subtitle: "基础变量 + 尿标志物", subtitleEn: "Core variables + urinary marker", interpretation: "IgA 肾病", interpretationEn: "IgA nephropathy", intercept: coefficient("0.75"), importanceOrder: ["age", "alb", "ualpha1mg", "egfr", "iga", "sex"],
+      formula: "A = 0.75 − 0.100897151392959×Age + 0.780017201693036×Sex + 0.119005247955097×ALB − 0.034007361661803×eGFRCr + 1.01408077717786×IgA − 0.025576547623995×U-α1MG",
+      formulaEn: "A = 0.75 − 0.100897151392959×Age + 0.780017201693036×Sex + 0.119005247955097×ALB − 0.034007361661803×eGFRCr + 1.01408077717786×IgA − 0.025576547623995×U-α1MG",
       fullFormula: "P = exp(A) / (1 + exp(A)); A = 0.75 − 0.100897151392959×Age + 0.780017201693036×Sex + 0.119005247955097×ALB − 0.034007361661803×eGFRCr + 1.01408077717786×IgA − 0.025576547623995×U-α1MG",
       fields: [
-        { key: "age", label: "年龄", enLabel: "Age", symbol: "Age", unit: "岁", enUnit: "years", min: 0, max: 90, step: 1, plotMin: 18, plotMax: 84, decimals: 0, default: 18, beta: -0.100897151392959 },
-        { key: "sex", label: "性别", enLabel: "Sex", symbol: "Sex", unit: "", enUnit: "", type: "select", options: [{ value: 1, label: "男", enLabel: "Male" }, { value: 0, label: "女", enLabel: "Female" }], default: 1, beta: 0.780017201693036, plotMin: 0, plotMax: 1 },
-        { key: "alb", label: "白蛋白", enLabel: "Albumin", symbol: "ALB", unit: "g/L", enUnit: "g/L", min: 0, max: 60, plotMin: 10.1, plotMax: 52.2, decimals: 1, default: 34.6, beta: 0.119005247955097 },
-        { key: "egfr", label: "估算肾小球滤过率", enLabel: "eGFR (creatinine)", symbol: "eGFRCr", unit: "mL/min/1.73m²", enUnit: "mL/min/1.73m²", min: 0, max: 200, plotMin: 2.59, plotMax: 197.11, decimals: 2, default: 96.14, beta: -0.034007361661803 },
-        { key: "iga", label: "血清 IgA", enLabel: "Serum IgA", symbol: "IgA", unit: "g/L", enUnit: "g/L", min: 0, max: 9, plotMin: 0.27, plotMax: 8.97, decimals: 2, default: 3.25, beta: 1.01408077717786 },
-        { key: "ualpha1mg", label: "尿 α1 微球蛋白", enLabel: "Urine α1-microglobulin", symbol: "U-α1MG", unit: "mg/L", enUnit: "mg/L", min: 0, max: 500, plotMin: 5, plotMax: 496, decimals: 1, default: 7.3, beta: -0.025576547623995 }
+        { key: "age", label: "年龄", enLabel: "Age", symbol: "Age", unit: "岁", enUnit: "years", min: 0, max: 90, step: 1, plotMin: 18, plotMax: 84, decimals: 0, beta: coefficient("-0.100897151392959") },
+        { key: "sex", label: "性别", enLabel: "Sex", symbol: "Sex", unit: "", enUnit: "", type: "select", options: [{ value: 1, label: "男", enLabel: "Male" }, { value: 0, label: "女", enLabel: "Female" }], beta: coefficient("0.780017201693036"), plotMin: 0, plotMax: 1 },
+        { key: "alb", label: "白蛋白", enLabel: "Albumin", symbol: "ALB", unit: "g/L", enUnit: "g/L", min: 0, max: 60, plotMin: 10.1, plotMax: 52.2, decimals: 1, beta: coefficient("0.119005247955097") },
+        { key: "egfr", label: "估算肾小球滤过率", enLabel: "eGFR (creatinine)", symbol: "eGFRCr", unit: "mL/min/1.73m²", enUnit: "mL/min/1.73m²", min: 0, max: 200, plotMin: 2.59342407, plotMax: 197.1126272670273, decimals: 2, beta: coefficient("-0.034007361661803") },
+        { key: "iga", label: "血清 IgA", enLabel: "Serum IgA", symbol: "IgA", unit: "g/L", enUnit: "g/L", min: 0, max: 9, plotMin: 0.27, plotMax: 8.97, decimals: 2, beta: coefficient("1.01408077717786") },
+        { key: "ualpha1mg", label: "尿 α1 微球蛋白", enLabel: "Urine α1-microglobulin", symbol: "U-α1MG", unit: "mg/L", enUnit: "mg/L", min: 0, max: 500, plotMin: 5, plotMax: 496, decimals: 1, beta: coefficient("-0.025576547623995") }
       ],
       recommendations: {
         veryLow: ["建议综合患者临床病史、检验检查指标，进一步鉴别薄基底膜肾病、Alport 综合征、膜性肾病、FSGS、微小病变、C3 肾小球病等。", "Integrate history and laboratory findings to consider thin basement membrane disease, Alport syndrome, membranous nephropathy, FSGS, minimal change disease, C3 glomerulopathy and other alternatives."],
@@ -180,23 +254,23 @@
       }
     },
     base: {
-      id: "base", name: "IgAN-BASE", nameEn: "IgAN-BASE", subtitle: "基础临床变量", subtitleEn: "Core clinical variables", interpretation: "IgA 肾病", interpretationEn: "IgA nephropathy", intercept: -3.05, importanceOrder: ["alb", "age", "iga", "egfr", "sex"],
-      formula: "A = −3.05 − 0.092950×Age + 1.025188×Sex + 0.169831×ALB − 0.024618×eGFRCr + 1.074624×IgA",
-      formulaEn: "A = −3.05 − 0.092950×Age + 1.025188×Sex + 0.169831×ALB − 0.024618×eGFRCr + 1.074624×IgA",
+      id: "base", name: "IgAN-BASE", nameEn: "IgAN-BASE", subtitle: "基础临床变量", subtitleEn: "Core clinical variables", interpretation: "IgA 肾病", interpretationEn: "IgA nephropathy", intercept: coefficient("-3.05"), importanceOrder: ["alb", "age", "iga", "egfr", "sex"],
+      formula: "A = −3.05 − 0.092949886218316×Age + 1.0251875681476×Sex + 0.169831025161927×ALB − 0.0246182086243941×eGFRCr + 1.07462360040374×IgA",
+      formulaEn: "A = −3.05 − 0.092949886218316×Age + 1.0251875681476×Sex + 0.169831025161927×ALB − 0.0246182086243941×eGFRCr + 1.07462360040374×IgA",
       fullFormula: "P = exp(A) / (1 + exp(A)); A = −3.05 − 0.092949886218316×Age + 1.0251875681476×Sex + 0.169831025161927×ALB − 0.0246182086243941×eGFRCr + 1.07462360040374×IgA",
       fields: [], recommendations: null
     },
     oxt: {
-      id: "oxt", name: "IgAN-OxT", nameEn: "IgAN-OxT", subtitle: "肾小管-间质损伤风险", subtitleEn: "Tubulointerstitial injury risk", interpretation: "肾小管萎缩/间质纤维化", interpretationEn: "Tubular atrophy / interstitial fibrosis", intercept: 9.28, importanceOrder: ["egfr", "protein", "age", "c3", "ldlc"],
-      formula: "A = 9.28 − 0.073423×Age − 0.077176×eGFRCr + 0.561605×U-24hTP − 1.546358×C3 + 0.092458×LDL-C",
-      formulaEn: "A = 9.28 − 0.073423×Age − 0.077176×eGFR + 0.561605×24-hour protein − 1.546358×C3 + 0.092458×LDL-C",
+      id: "oxt", name: "IgAN-OxT", nameEn: "IgAN-OxT", subtitle: "肾小管-间质损伤风险", subtitleEn: "Tubulointerstitial injury risk", interpretation: "肾小管萎缩/间质纤维化", interpretationEn: "Tubular atrophy / interstitial fibrosis", intercept: coefficient("9.28"), importanceOrder: ["egfr", "protein", "age", "c3", "ldlc"],
+      formula: "A = 9.28 − 0.0734226757215475×Age − 0.0771762735979292×eGFRCr + 0.56160497842656×U-24hTP − 1.54635793205125×C3 + 0.092457733083033×LDL-C",
+      formulaEn: "A = 9.28 − 0.0734226757215475×Age − 0.0771762735979292×eGFR + 0.56160497842656×24-hour protein − 1.54635793205125×C3 + 0.092457733083033×LDL-C",
       fullFormula: "P = exp(A) / (1 + exp(A)); A = 9.28 − 0.0734226757215475×Age − 0.0771762735979292×eGFRCr + 0.56160497842656×U-24hTP − 1.54635793205125×C3 + 0.092457733083033×LDL-C",
       fields: [
-        { key: "age", label: "年龄", enLabel: "Age", symbol: "Age", unit: "岁", enUnit: "years", min: 0, max: 90, step: 1, plotMin: 18, plotMax: 70, decimals: 0, default: 34, beta: -0.0734226757215475 },
-        { key: "egfr", label: "估算肾小球滤过率", enLabel: "eGFR (creatinine)", symbol: "eGFRCr", unit: "mL/min/1.73m²", enUnit: "mL/min/1.73m²", min: 0, max: 200, plotMin: 4.447097497967679, plotMax: 152.4507753547946, decimals: 2, default: 80, beta: -0.0771762735979292 },
-        { key: "protein", label: "24 h 尿蛋白", enLabel: "24-hour urine protein", symbol: "U-24hTP", unit: "g/24 h", enUnit: "g/24 h", min: 0, max: 20, plotMin: 0.05, plotMax: 19.58, decimals: 2, default: 1.2, beta: 0.56160497842656, rangeSource: "cohort" },
-        { key: "c3", label: "补体 C3", enLabel: "Complement C3", symbol: "C3", unit: "g/L", enUnit: "g/L", min: 0, max: 4, plotMin: 0.52, plotMax: 2.48, decimals: 2, default: 1.2, beta: -1.54635793205125, rangeSource: "cohort" },
-        { key: "ldlc", label: "低密度脂蛋白", enLabel: "LDL cholesterol", symbol: "LDL-C", unit: "mmol/L", enUnit: "mmol/L", min: 0, max: 15, plotMin: 1.12, plotMax: 12.32, decimals: 2, default: 3.1, beta: 0.092457733083033, rangeSource: "cohort" }
+        { key: "age", label: "年龄", enLabel: "Age", symbol: "Age", unit: "岁", enUnit: "years", min: 0, max: 90, step: 1, plotMin: 18, plotMax: 70, decimals: 0, beta: coefficient("-0.0734226757215475") },
+        { key: "egfr", label: "估算肾小球滤过率", enLabel: "eGFR (creatinine)", symbol: "eGFRCr", unit: "mL/min/1.73m²", enUnit: "mL/min/1.73m²", min: 0, max: 200, plotMin: 4.447097497967679, plotMax: 152.4507753547946, decimals: 2, beta: coefficient("-0.0771762735979292") },
+        { key: "protein", label: "24 h 尿蛋白", enLabel: "24-hour urine protein", symbol: "U-24hTP", unit: "g/24 h", enUnit: "g/24 h", min: 0, max: 20, plotMin: 0.05, plotMax: 19.58, decimals: 2, beta: coefficient("0.56160497842656"), rangeSource: "cohort" },
+        { key: "c3", label: "补体 C3", enLabel: "Complement C3", symbol: "C3", unit: "g/L", enUnit: "g/L", min: 0, max: 4, plotMin: 0.52, plotMax: 2.48, decimals: 2, beta: coefficient("-1.54635793205125"), rangeSource: "cohort" },
+        { key: "ldlc", label: "低密度脂蛋白", enLabel: "LDL cholesterol", symbol: "LDL-C", unit: "mmol/L", enUnit: "mmol/L", min: 0, max: 15, plotMin: 1.12, plotMax: 12.32, decimals: 2, beta: coefficient("0.092457733083033"), rangeSource: "cohort" }
       ], recommendations: {
         veryLow: ["当前模型提示肾小管萎缩/间质纤维化可能性较低，仍建议结合肾功能、蛋白尿及肾活检病理综合判断。", "The model suggests lower likelihood of tubular atrophy/interstitial fibrosis; integrate kidney function, proteinuria and biopsy pathology."],
         low: ["当前模型提示相关病理损伤可能性较低，建议结合临床病史、尿蛋白定量、eGFR 变化趋势及影像学结果随访评估。", "The model suggests lower likelihood of injury; follow with history, quantitative proteinuria, eGFR trend and imaging."],
@@ -208,11 +282,11 @@
   };
 
   const sharedFields = [
-    { key: "age", label: "年龄", enLabel: "Age", symbol: "Age", unit: "岁", enUnit: "years", min: 0, max: 90, step: 1, plotMin: 18, plotMax: 84, decimals: 0, default: 18, beta: -0.092949886218316 },
-    { key: "sex", label: "性别", enLabel: "Sex", symbol: "Sex", unit: "", enUnit: "", type: "select", options: [{ value: 1, label: "男", enLabel: "Male" }, { value: 0, label: "女", enLabel: "Female" }], default: 1, beta: 1.0251875681476, plotMin: 0, plotMax: 1 },
-    { key: "alb", label: "白蛋白", enLabel: "Albumin", symbol: "ALB", unit: "g/L", enUnit: "g/L", min: 0, max: 60, plotMin: 10.1, plotMax: 52.2, decimals: 1, default: 34.6, beta: 0.169831025161927 },
-    { key: "egfr", label: "估算肾小球滤过率", enLabel: "eGFR (creatinine)", symbol: "eGFRCr", unit: "mL/min/1.73m²", enUnit: "mL/min/1.73m²", min: 0, max: 200, plotMin: 2.59, plotMax: 197.11, decimals: 2, default: 96.14, beta: -0.0246182086243941 },
-    { key: "iga", label: "血清 IgA", enLabel: "Serum IgA", symbol: "IgA", unit: "g/L", enUnit: "g/L", min: 0, max: 9, plotMin: 0.27, plotMax: 8.97, decimals: 2, default: 3.25, beta: 1.07462360040374 }
+    { key: "age", label: "年龄", enLabel: "Age", symbol: "Age", unit: "岁", enUnit: "years", min: 0, max: 90, step: 1, plotMin: 18, plotMax: 84, decimals: 0, beta: coefficient("-0.092949886218316") },
+    { key: "sex", label: "性别", enLabel: "Sex", symbol: "Sex", unit: "", enUnit: "", type: "select", options: [{ value: 1, label: "男", enLabel: "Male" }, { value: 0, label: "女", enLabel: "Female" }], beta: coefficient("1.0251875681476"), plotMin: 0, plotMax: 1 },
+    { key: "alb", label: "白蛋白", enLabel: "Albumin", symbol: "ALB", unit: "g/L", enUnit: "g/L", min: 0, max: 60, plotMin: 10.1, plotMax: 52.2, decimals: 1, beta: coefficient("0.169831025161927") },
+    { key: "egfr", label: "估算肾小球滤过率", enLabel: "eGFR (creatinine)", symbol: "eGFRCr", unit: "mL/min/1.73m²", enUnit: "mL/min/1.73m²", min: 0, max: 200, plotMin: 2.59342407, plotMax: 197.1126272670273, decimals: 2, beta: coefficient("-0.0246182086243941") },
+    { key: "iga", label: "血清 IgA", enLabel: "Serum IgA", symbol: "IgA", unit: "g/L", enUnit: "g/L", min: 0, max: 9, plotMin: 0.27, plotMax: 8.97, decimals: 2, beta: coefficient("1.07462360040374") }
   ];
   MODEL_DEFS.base.fields = sharedFields;
   MODEL_DEFS.base.recommendations = MODEL_DEFS.uBASE.recommendations;
@@ -224,6 +298,33 @@
     { key: "high", max: 0.9, name: "高风险", enName: "High risk", color: "#db794c" },
     { key: "veryHigh", max: 1, name: "极高风险", enName: "Very high risk", color: "#d94d51" }
   ];
+
+  // Keep influence colours consistent across the contribution views. Red marks
+  // a positive signed contribution; green marks a negative one.
+  const INFLUENCE_COLORS = { positive: "#d95757", negative: "#2e9d72" };
+  const INFLUENCE_STROKES = { positive: "#a83f45", negative: "#1f7658" };
+  const CONTRIBUTION_EPSILON = 1e-12;
+
+  function contributionSign(value) {
+    if (value > CONTRIBUTION_EPSILON) return "positive";
+    if (value < -CONTRIBUTION_EPSILON) return "negative";
+    return "neutral";
+  }
+
+  function contributionColor(value) {
+    const sign = contributionSign(value);
+    return sign === "positive" ? INFLUENCE_COLORS.positive : sign === "negative" ? INFLUENCE_COLORS.negative : "#84979b";
+  }
+
+  function contributionStroke(value) {
+    const sign = contributionSign(value);
+    return sign === "positive" ? INFLUENCE_STROKES.positive : sign === "negative" ? INFLUENCE_STROKES.negative : "#607f86";
+  }
+
+  function contributionLabel(value, decimals = 3) {
+    if (!Number.isFinite(value) || Math.abs(value) < CONTRIBUTION_EPSILON) return (0).toFixed(decimals);
+    return `${value > 0 ? "+" : ""}${value.toFixed(decimals)}`;
+  }
 
   const els = {
     modelList: document.querySelector("#modelList"), modelCount: document.querySelector("#modelCount"), headingModelChip: document.querySelector("#headingModelChip"), inputForm: document.querySelector("#inputForm"), formulaText: document.querySelector("#formulaText"), completionStatus: document.querySelector("#completionStatus"), runLabel: document.querySelector("#runLabel"), runHint: document.querySelector("#runHint"), validationMessage: document.querySelector("#validationMessage"), resultWorkspace: document.querySelector("#resultWorkspace"), probabilityRing: document.querySelector("#probabilityRing"), probabilityValue: document.querySelector("#probabilityValue"), aValue: document.querySelector("#aValue"), modelCode: document.querySelector("#modelCode"), riskTitle: document.querySelector("#riskTitle"), riskInterpretation: document.querySelector("#riskInterpretation"), riskScale: document.querySelector("#riskScale"), adviceCallout: document.querySelector("#adviceCallout"), adviceBody: document.querySelector("#adviceBody"), nomogram: document.querySelector("#nomogram"), nomogramSource: document.querySelector("#nomogramSource"), nomogramTierKey: document.querySelector("#nomogramTierKey"), barPlot: document.querySelector("#barPlot"), scatterPlot: document.querySelector("#scatterPlot"), modelInfoContent: document.querySelector("#modelInfoContent")
@@ -295,7 +396,7 @@
   function renderForm(model, initialValues = {}) {
     els.inputForm.innerHTML = model.fields.map((field) => {
       const rawValue = initialValues[field.key] ?? "";
-      const input = field.type === "select" ? `<select id="field-${field.key}" name="${field.key}" aria-label="${fieldLabel(field)}"><option value="" disabled ${rawValue === "" ? "selected" : ""}>${t("selectPlaceholder")}</option>${field.options.map((option) => `<option value="${option.value}" ${String(option.value) === String(rawValue) ? "selected" : ""}>${optionLabel(option)}</option>`).join("")}</select>` : `<input id="field-${field.key}" name="${field.key}" type="number" inputmode="decimal" value="${rawValue}" min="${field.min}" max="${field.max}" step="${field.step || 0.01}" required aria-label="${fieldLabel(field)}" />`;
+      const input = field.type === "select" ? `<select id="field-${field.key}" name="${field.key}" aria-label="${fieldLabel(field)}"><option value="" disabled ${rawValue === "" ? "selected" : ""}>${t("selectPlaceholder")}</option>${field.options.map((option) => `<option value="${option.value}" ${String(option.value) === String(rawValue) ? "selected" : ""}>${optionLabel(option)}</option>`).join("")}</select>` : `<input id="field-${field.key}" name="${field.key}" type="number" inputmode="decimal" value="${rawValue}" min="${field.min}" max="${field.max}" step="${field.step ?? "any"}" required aria-label="${fieldLabel(field)}" />`;
       const hint = field.type === "select" ? t("sexHint") : `${t("range")} ${formatNumber(field.min, field.decimals)} – ${formatNumber(field.max, field.decimals)}`;
       return `<div class="field"><div class="field-label"><label for="field-${field.key}">${fieldLabel(field)}<span>${field.symbol}</span></label><span class="field-unit">${fieldUnit(field)}</span></div><div class="field-control">${input}</div><div class="field-hint">${hint}</div></div>`;
     }).join("");
@@ -335,12 +436,29 @@
 
   function readValues(model) {
     const values = {}; let valid = true;
-    model.fields.forEach((field) => { const element = els.inputForm.elements[field.key]; const rawValue = element?.value?.trim() ?? ""; const value = rawValue === "" ? NaN : Number(rawValue); values[field.key] = value; const step = Number(field.step); const stepMismatch = Number.isFinite(step) && step > 0 && Number.isFinite(value) && Math.abs((value - field.min) / step - Math.round((value - field.min) / step)) > 1e-9; if (!Number.isFinite(value) || value < field.min || value > field.max || stepMismatch) valid = false; });
+    model.fields.forEach((field) => {
+      const element = els.inputForm.elements[field.key];
+      const rawValue = element?.value?.trim() ?? "";
+      const value = rawValue === "" ? NaN : Number(rawValue);
+      values[field.key] = value;
+      const step = field.step === undefined || field.step === "any" ? NaN : Number(field.step);
+      const stepMismatch = Number.isFinite(step) && step > 0 && Number.isFinite(value)
+        && Math.abs((value - field.min) / step - Math.round((value - field.min) / step)) > 1e-9;
+      // Continuous fields use step="any" so the measured decimal value reaches
+      // the model unchanged; age remains integer-valued through step=1.
+      if (!Number.isFinite(value) || value < field.min || value > field.max || stepMismatch) valid = false;
+    });
     return { values, valid };
   }
 
+  // A term's displayed contribution is the same signed linear quantity used
+  // by both explanation plots and the model's linear predictor.
+  function termContribution(field, value) {
+    return field.beta * value;
+  }
+
   function calculate(model, values) {
-    const terms = model.fields.map((field) => ({ field, contribution: field.beta * values[field.key] }));
+    const terms = model.fields.map((field) => ({ field, contribution: termContribution(field, values[field.key]) }));
     const a = model.intercept + terms.reduce((sum, term) => sum + term.contribution, 0);
     return { a, p: logistic(a), terms };
   }
@@ -376,7 +494,7 @@
     hasRun = true; showResults();
     validationKey = ""; els.validationMessage.textContent = ""; els.completionStatus.textContent = `${t("filled")} ${model.fields.length} / ${model.fields.length}`;
     const result = calculate(model, values); const tier = getTier(result.p); const label = interpretation(model, tier);
-    els.probabilityRing.style.setProperty("--probability", `${result.p * 100}%`); els.probabilityRing.style.background = `conic-gradient(${tier.color} ${result.p * 100}%, #e7eeef 0)`; els.probabilityValue.textContent = `${(result.p * 100).toFixed(2)}%`; els.aValue.textContent = result.a.toFixed(4); els.riskTitle.textContent = tierLabel(tier); els.riskTitle.style.color = tier.color; els.riskInterpretation.textContent = label; els.adviceCallout.textContent = `${label}.`; els.adviceCallout.style.borderLeftColor = tier.color; els.adviceCallout.style.color = tier.color === "#d94d51" ? "#913538" : "#48652f"; els.adviceBody.textContent = recommendation(model, tier);
+    els.probabilityRing.style.setProperty("--probability", `${result.p * 100}%`); els.probabilityRing.style.background = `conic-gradient(${tier.color} ${result.p * 100}%, #e7eeef 0)`; els.probabilityValue.textContent = `${(result.p * 100).toFixed(2)}%`; els.aValue.textContent = result.a.toFixed(6); els.aValue.title = result.a.toPrecision(17); els.riskTitle.textContent = tierLabel(tier); els.riskTitle.style.color = tier.color; els.riskInterpretation.textContent = label; els.adviceCallout.textContent = `${label}.`; els.adviceCallout.style.borderLeftColor = tier.color; els.adviceCallout.style.color = tier.color === "#d94d51" ? "#913538" : "#48652f"; els.adviceBody.textContent = recommendation(model, tier);
     renderRiskScale(result.p, tier); renderNomogram(model, values, result, tier); renderBarPlot(model, result); renderScatterPlot(model, result); renderModelInfo(model);
   }
 
@@ -390,8 +508,10 @@
   }
 
   function renderRiskScale(probability, tier) {
-    const labels = lang === "zh" ? ["0%", "15%", "40%", "70%", "90%", "100%"] : ["0%", "15%", "40%", "70%", "90%", "100%"];
-    els.riskScale.innerHTML = `<div class="risk-scale-track"><span></span><span></span><span></span><span></span><span></span></div><div class="risk-scale-marker" style="left:${probability * 100}%;background:${tier.color};color:${tier.color}"></div><div class="risk-scale-labels">${labels.map((label) => `<span>${label}</span>`).join("")}</div>`;
+    const thresholds = [0, 15, 40, 70, 90, 100];
+    const labels = thresholds.map((value) => `${value}%`);
+    const labelMarkup = labels.map((label, index) => `<span style="left:${thresholds[index]}%">${label}</span>`).join("");
+    els.riskScale.innerHTML = `<div class="risk-scale-track"><span></span><span></span><span></span><span></span><span></span></div><div class="risk-scale-marker" style="left:${probability * 100}%;background:${tier.color};color:${tier.color}"></div><div class="risk-scale-labels">${labelMarkup}</div>`;
   }
 
   function getScale(model) {
@@ -400,53 +520,120 @@
   }
 
   function renderNomogram(model, values, result, tier) {
-    const svg = els.nomogram; const ns = "http://www.w3.org/2000/svg"; const width = 1080; const left = 205; const right = 26; const axisWidth = width - left - right; const rowHeight = 62; const top = 47; const scale = getScale(model); const height = top + (model.fields.length + 3) * rowHeight + 25; svg.setAttribute("viewBox", `0 0 ${width} ${height}`); svg.setAttribute("height", String(height)); svg.innerHTML = "";
+    const svg = els.nomogram; const ns = "http://www.w3.org/2000/svg"; const width = 1080; const left = 205; const right = 26; const axisWidth = width - left - right; const rowHeight = 64; const top = 50; const totalGap = 20; const scale = getScale(model); const totalY = top + (model.fields.length + 1) * rowHeight + totalGap; const probabilityY = totalY + rowHeight; const mappingY = probabilityY + 48; const height = mappingY + 24; svg.setAttribute("viewBox", `0 0 ${width} ${height}`); svg.setAttribute("height", String(height)); svg.innerHTML = "";
     setNomogramSource(model);
     renderNomogramTierKey();
     const add = (tag, attrs, value) => { const node = document.createElementNS(ns, tag); Object.entries(attrs || {}).forEach(([key, val]) => node.setAttribute(key, val)); if (value !== undefined) node.textContent = value; svg.appendChild(node); return node; }; const line = (x1, y1, x2, y2, attrs = {}) => add("line", { x1, y1, x2, y2, ...attrs }); const text = (x, y, value, attrs = {}) => add("text", { x, y, fill: "#66808a", "font-size": 10, ...attrs }, value); const xAt = (ratio) => left + clamp(ratio, 0, 1) * axisWidth;
-    const aRatio = (a) => clamp((a - scale.aMin) / (scale.aMax - scale.aMin || 1), 0, 1); const pointX = (points) => xAt(points / 100);
+    // Variable rows retain conventional linear point scales. The total-point
+    // and probability rows use one calibrated probability coordinate so their
+    // markers always land on the same vertical guide. Total-point tick labels
+    // are the scores at the five displayed risk thresholds; this keeps the
+    // numeric scale readable even when the logistic curve is near saturation.
+    const pointX = (points) => xAt(points / 100);
+    const probabilityToX = (probability) => xAt(clamp(Number.isFinite(probability) ? probability : 0, 0, 1));
+    const totalPointsForProbability = (probability) => {
+      if (probability <= 0) return 0;
+      if (probability >= 1) return scale.totalMax;
+      return clamp((logit(probability) - scale.aMin) * scale.pointPerA, 0, scale.totalMax);
+    };
     add("rect", { x: 0, y: 0, width, height, rx: 7, fill: "#fbfdfc" }); text(17, 22, t("pointsAxis"), { fill: "#315864", "font-size": 10, "font-weight": "800", "letter-spacing": "1" }); line(left, top, left + axisWidth, top, { stroke: "#839da5", "stroke-width": 1.5 });
     for (let i = 0; i <= 10; i += 1) { const x = xAt(i / 10); line(x, top, x, top + (i % 2 === 0 ? 10 : 6), { stroke: "#6e858d", "stroke-width": 1 }); text(x, top - 9, String(i * 10), { "text-anchor": "middle", fill: "#4d6a75", "font-size": 9 }); }
     scale.ranges.forEach((range, index) => { const field = range.field; const y = top + (index + 1) * rowHeight; const currentC = field.beta * values[field.key]; const points = (currentC - range.minC) * scale.pointPerA; const maxPoints = range.span * scale.pointPerA; const rowEnd = pointX(maxPoints); text(17, y + 4, field.symbol, { fill: "#284c5a", "font-size": 11, "font-weight": "700" }); text(17, y + 19, fieldLabel(field), { fill: "#8ca0a7", "font-size": 9 }); line(left, y, rowEnd, y, { stroke: "#a7b8bd", "stroke-width": 1.2 });
       for (let i = 0; i <= 10; i += 1) { const x = pointX(maxPoints * i / 10); line(x, y, x, y + (i % 2 === 0 ? 7 : 4), { stroke: "#79929a", "stroke-width": 1 }); const rawRatio = field.beta < 0 ? 1 - i / 10 : i / 10; const rawValue = range.minValue + rawRatio * (range.maxValue - range.minValue); const isEndpoint = i === 0 || i === 10; const label = field.type === "select" ? (isEndpoint ? optionLabel(field.options.find((option) => String(option.value) === String(rawValue > .5 ? 1 : 0)) || { value: rawValue > .5 ? 1 : 0 }) : "") : formatNumber(rawValue, field.decimals); if ((field.type === "select" ? isEndpoint : i === 0 || i === 5 || i === 10) && label) text(x, y + 21, label, { "text-anchor": "middle", fill: "#708890", "font-size": 9 }); }
       const plottedPoints = clamp(points, 0, maxPoints); const mx = pointX(plottedPoints); line(mx, y - 9, mx, y + 11, { stroke: "#13a39e", "stroke-width": 2.2 }); add("circle", { cx: mx, cy: y, r: 5, fill: "#fff", stroke: "#13a39e", "stroke-width": 2.2 }); add("circle", { cx: mx, cy: y, r: 2, fill: "#13a39e" }); text(mx, y - 13, `${Math.round(plottedPoints)} ${t("points")}`, { "text-anchor": "middle", fill: "#087278", "font-size": 9, "font-weight": "800" }); const endLabelX = rowEnd >= left + axisWidth - 2 ? rowEnd - 2 : rowEnd + 5; text(endLabelX, y + 37, `${formatNumber(field.beta > 0 ? range.maxValue : range.minValue, field.decimals)} → ${Math.round(maxPoints)} ${t("points")}`, { "text-anchor": rowEnd >= left + axisWidth - 2 ? "end" : "start", fill: "#9aacb0", "font-size": 8 });
     });
-    const totalY = top + (model.fields.length + 1) * rowHeight; const totalPoints = (result.a - scale.aMin) * scale.pointPerA; const totalX = xAt(totalPoints / (scale.totalMax || 1)); text(17, totalY + 4, t("total"), { fill: "#284c5a", "font-size": 11, "font-weight": "800" }); line(left, totalY, left + axisWidth, totalY, { stroke: "#315864", "stroke-width": 2 }); for (let i = 0; i <= 4; i += 1) { const x = xAt(i / 4); line(x, totalY, x, totalY + 8, { stroke: "#315864", "stroke-width": 1.3 }); text(x, totalY + 22, formatNumber(scale.totalMax * i / 4, 1), { "text-anchor": "middle", fill: "#536e79", "font-size": 9 }); } add("circle", { cx: totalX, cy: totalY, r: 5.5, fill: tier.color }); text(totalX, totalY - 14, `${formatNumber(totalPoints, 1)} ${t("points")}`, { "text-anchor": "middle", fill: tier.color, "font-size": 10, "font-weight": "850" });
-    const probabilityY = totalY + rowHeight;
+    const totalPoints = (result.a - scale.aMin) * scale.pointPerA;
+    // Use the computed probability directly for the current marker. This
+    // avoids a second rounded/logit path and guarantees the two markers share
+    // exactly the same x coordinate, including values outside plot ranges.
+    const totalX = probabilityToX(result.p);
+    const currentAnchor = result.p <= 0.04 ? "start" : result.p >= 0.96 ? "end" : "middle";
+    text(17, totalY + 4, t("total"), { fill: "#284c5a", "font-size": 11, "font-weight": "800" });
+    line(left, totalY, left + axisWidth, totalY, { stroke: "#315864", "stroke-width": 2 });
+    const thresholdProbabilities = [0, .15, .4, .7, .9, 1];
+    thresholdProbabilities.forEach((probability) => {
+      const score = totalPointsForProbability(probability);
+      const x = probabilityToX(probability);
+      line(x, totalY, x, totalY + 8, { stroke: "#315864", "stroke-width": 1.3 });
+      const anchor = x <= left + 12 ? "start" : x >= left + axisWidth - 12 ? "end" : "middle";
+      text(x, totalY + 25, formatNumber(score, 1), { "text-anchor": anchor, fill: "#536e79", "font-size": 9 });
+    });
+    add("circle", { cx: totalX, cy: totalY, r: 5.5, fill: tier.color });
+    text(totalX, totalY - 14, `${formatNumber(totalPoints, 1)} ${t("points")}`, { "text-anchor": currentAnchor, fill: tier.color, "font-size": 10, "font-weight": "850" });
     text(17, probabilityY + 4, t("riskProbability"), { fill: "#284c5a", "font-size": 11, "font-weight": "800" });
     const bandY = probabilityY - 8;
-    const probabilityToX = (probability) => xAt(aRatio(logit(probability === 0 ? .0001 : probability === 1 ? .9999 : probability)));
     const bands = [{ from: 0, to: .15, color: "#77c887" }, { from: .15, to: .4, color: "#b5dc9d" }, { from: .4, to: .7, color: "#efd86b" }, { from: .7, to: .9, color: "#f2a06b" }, { from: .9, to: 1, color: "#d85b61" }];
     bands.forEach((band) => { const x1 = probabilityToX(band.from); const x2 = probabilityToX(band.to); add("rect", { x: Math.min(x1, x2), y: bandY, width: Math.abs(x2 - x1), height: 14, fill: band.color, opacity: .82 }); });
-    [0, .15, .4, .7, .9, 1].forEach((probability) => { const x = probabilityToX(probability); line(x, bandY + 14, x, bandY + 21, { stroke: "#4e6873", "stroke-width": 1.2 }); text(x, bandY + 33, `${Math.round(probability * 100)}%`, { "text-anchor": "middle", fill: "#536e79", "font-size": 9 }); });
-    const pX = xAt(aRatio(result.a)); line(totalX, totalY + 8, pX, bandY - 8, { stroke: tier.color, "stroke-width": 1.5, "stroke-dasharray": "4 4", opacity: .72 }); add("circle", { cx: pX, cy: bandY - 8, r: 4.7, fill: tier.color }); line(pX, bandY - 8, pX, bandY + 19, { stroke: tier.color, "stroke-width": 2.5 }); text(pX, bandY - 17, `${(result.p * 100).toFixed(1)}%`, { "text-anchor": "middle", fill: tier.color, "font-size": 10, "font-weight": "850" }); text(left + axisWidth, probabilityY + 33, t("scoreMapping"), { "text-anchor": "end", fill: "#8da0a7", "font-size": 8 });
+    [0, .15, .4, .7, .9, 1].forEach((probability) => { const x = probabilityToX(probability); line(x, bandY + 14, x, bandY + 21, { stroke: "#4e6873", "stroke-width": 1.2 }); const anchor = probability === 0 ? "start" : probability === 1 ? "end" : "middle"; text(x, bandY + 33, `${Math.round(probability * 100)}%`, { "text-anchor": anchor, fill: "#536e79", "font-size": 9 }); });
+    const pX = probabilityToX(result.p);
+    line(totalX, totalY + 8, pX, bandY - 8, { stroke: tier.color, "stroke-width": 1.5, "stroke-dasharray": "4 4", opacity: .72 });
+    add("circle", { cx: pX, cy: bandY - 8, r: 4.7, fill: tier.color });
+    line(pX, bandY - 8, pX, bandY + 19, { stroke: tier.color, "stroke-width": 2.5 });
+    text(pX, bandY - 17, `${(result.p * 100).toFixed(1)}%`, { "text-anchor": currentAnchor, fill: tier.color, "font-size": 10, "font-weight": "850" });
+    text(left + axisWidth, mappingY, t("scoreMapping"), { "text-anchor": "end", fill: "#8da0a7", "font-size": 8 });
   }
 
   function interpolateColor(ratio) { const stops = [[61, 133, 198], [134, 101, 189], [223, 90, 82]]; const segment = clamp(ratio, 0, 1) * 2; const index = Math.min(1, Math.floor(segment)); const local = segment - index; const a = stops[index]; const b = stops[index + 1]; return `rgb(${Math.round(a[0] + (b[0] - a[0]) * local)},${Math.round(a[1] + (b[1] - a[1]) * local)},${Math.round(a[2] + (b[2] - a[2]) * local)})`; }
 
+  function contributionDomain(model, result) {
+    const observedContributions = model.fields.flatMap((field) => {
+      const min = field.plotMin ?? field.min;
+      const max = field.plotMax ?? field.max;
+      return [termContribution(field, min), termContribution(field, max)];
+    });
+    return Math.max(
+      1,
+      ...observedContributions.map((value) => Math.abs(value)),
+      ...result.terms.map((term) => Math.abs(term.contribution))
+    );
+  }
+
   function orderedTerms(model, result) {
     const order = new Map((model.importanceOrder || model.fields.map((field) => field.key)).map((key, index) => [key, index]));
-    return result.terms.slice().sort((a, b) => (order.get(a.field.key) ?? 999) - (order.get(b.field.key) ?? 999));
+    const originalIndex = new Map(result.terms.map((term, index) => [term.field.key, index]));
+    const magnitude = (term) => Number.isFinite(term.contribution) ? Math.abs(term.contribution) : 0;
+    return result.terms.slice().sort((a, b) => {
+      const magnitudeDelta = magnitude(b) - magnitude(a);
+      if (magnitudeDelta !== 0) return magnitudeDelta;
+      const orderDelta = (order.get(a.field.key) ?? 999) - (order.get(b.field.key) ?? 999);
+      if (orderDelta !== 0) return orderDelta;
+      return (originalIndex.get(a.field.key) ?? 0) - (originalIndex.get(b.field.key) ?? 0);
+    });
   }
 
   function renderBarPlot(model, result) {
     const svg = els.barPlot; if (!svg) return;
-    const ns = "http://www.w3.org/2000/svg"; const width = 960; const left = 190; const right = 34; const axisWidth = width - left - right; const top = 58; const rowHeight = 53; const height = top + result.terms.length * rowHeight + 52;
+    const ns = "http://www.w3.org/2000/svg"; const width = 960; const left = 190; const right = 34; const axisWidth = width - left - right;
+    // Keep the axis title, tick labels and the first row on separate baselines.
+    // This is especially important after localization, where axis titles vary
+    // considerably in width.
+    // Reserve three distinct baselines for the axis title, tick labels, and
+    // the first feature row. Long translations should never collide with the
+    // numeric scale below them.
+    const top = 88; const rowHeight = 56; const height = top + result.terms.length * rowHeight + 52;
     svg.setAttribute("viewBox", `0 0 ${width} ${height}`); svg.setAttribute("height", String(height)); svg.innerHTML = "";
     const add = (tag, attrs, value) => { const node = document.createElementNS(ns, tag); Object.entries(attrs || {}).forEach(([key, val]) => node.setAttribute(key, val)); if (value !== undefined) node.textContent = value; svg.appendChild(node); return node; };
     const line = (x1, y1, x2, y2, attrs = {}) => add("line", { x1, y1, x2, y2, ...attrs });
     const text = (x, y, value, attrs = {}) => add("text", { x, y, fill: "#67818b", "font-size": 10, ...attrs }, value);
-    const sorted = orderedTerms(model, result); const maxBar = Math.max(...sorted.map((term) => Math.abs(term.contribution)), 1);
+    const sorted = orderedTerms(model, result); const maxBar = contributionDomain(model, result);
     add("rect", { x: 0, y: 0, width, height, rx: 7, fill: "#fbfdfc" });
-    text(18, 25, t("featureLabel"), { fill: "#315864", "font-size": 10, "font-weight": "800", "letter-spacing": "1" });
-    text(left, 25, t("barAxis"), { fill: "#315864", "font-size": 10, "font-weight": "800" });
-    line(left, 35, left + axisWidth, 35, { stroke: "#9aafb3", "stroke-width": 1.2 });
-    [0, .25, .5, .75, 1].forEach((ratio) => { const x = left + axisWidth * ratio; line(x, 35, x, 42, { stroke: "#718b93" }); text(x, 25, formatNumber(maxBar * ratio, 2), { "text-anchor": "middle", fill: "#738990", "font-size": 8 }); });
+    text(18, 22, t("featureLabel"), { fill: "#315864", "font-size": 10, "font-weight": "800", "letter-spacing": "1" });
+    text(left, 20, t("barAxis"), { fill: "#315864", "font-size": 10, "font-weight": "800" });
+    const axisY = 58;
+    line(left, axisY, left + axisWidth, axisY, { stroke: "#9aafb3", "stroke-width": 1.2 });
+    [0, .25, .5, .75, 1].forEach((ratio) => { const x = left + axisWidth * ratio; line(x, axisY, x, axisY + 8, { stroke: "#718b93" }); text(x, 46, formatNumber(maxBar * ratio, 2), { "text-anchor": "middle", fill: "#738990", "font-size": 8 }); });
     sorted.forEach(({ field, contribution }, index) => {
       const y = top + index * rowHeight; const magnitude = Math.abs(contribution); const barEnd = left + magnitude / maxBar * axisWidth;
       text(18, y + 4, fieldLabel(field), { fill: "#294d5a", "font-size": 11, "font-weight": "700" }); text(18, y + 19, field.symbol, { fill: "#9aabb0", "font-size": 9 });
-      line(0, y + 32, width, y + 32, { stroke: "#edf2f1" }); add("rect", { x: left, y: y - 9, width: axisWidth, height: 18, rx: 4, fill: "#edf3f2" }); add("rect", { x: left, y: y - 9, width: Math.max(3, barEnd - left), height: 18, rx: 4, fill: contribution >= 0 ? "#1aa7a1" : "#d96a61" });
-      const labelX = barEnd > width - 85 ? width - 9 : barEnd + 10; text(labelX, y + 5, `${contribution >= 0 ? "+" : ""}${contribution.toFixed(3)}`, { "text-anchor": barEnd > width - 85 ? "end" : "start", fill: contribution >= 0 ? "#087278" : "#a84443", "font-size": 9, "font-weight": "800" });
+      const influenceColor = contributionColor(contribution);
+      line(0, y + 34, width, y + 34, { stroke: "#edf2f1" });
+      add("rect", { x: left, y: y - 9, width: axisWidth, height: 18, rx: 4, fill: "#edf3f2" });
+      // Bar colour follows the signed contribution so it matches Scatter for
+      // the current case (and remains neutral when the contribution is zero).
+      add("rect", { x: left, y: y - 9, width: Math.max(3, barEnd - left), height: 18, rx: 4, fill: influenceColor, "data-feature": field.key, "data-contribution": contribution.toPrecision(17), "data-sign": contributionSign(contribution) });
+      const labelAtRight = barEnd > width - 92;
+      const labelX = labelAtRight ? width - 9 : barEnd + 10;
+      text(labelX, y + 5, contributionLabel(contribution), { "text-anchor": labelAtRight ? "end" : "start", fill: influenceColor, "font-size": 9, "font-weight": "800" });
     });
     text(left, height - 12, t("barFooter"), { fill: "#8aa0a6", "font-size": 9 });
   }
@@ -458,19 +645,46 @@
     const add = (tag, attrs, value) => { const node = document.createElementNS(ns, tag); Object.entries(attrs || {}).forEach(([key, val]) => node.setAttribute(key, val)); if (value !== undefined) node.textContent = value; svg.appendChild(node); return node; };
     const line = (x1, y1, x2, y2, attrs = {}) => add("line", { x1, y1, x2, y2, ...attrs });
     const text = (x, y, value, attrs = {}) => add("text", { x, y, fill: "#67818b", "font-size": 10, ...attrs }, value);
-    const sorted = orderedTerms(model, result); const maxScatter = Math.max(...model.fields.map((field) => Math.abs(field.beta * ((field.plotMax ?? field.max) - (field.plotMin ?? field.min)) / 2)), ...result.terms.map((term) => Math.abs(term.contribution)), 1); const center = left + axisWidth / 2; const scatterX = (value) => center + clamp(value / maxScatter, -1, 1) * (axisWidth / 2 - 16);
+    const sorted = orderedTerms(model, result);
+    // The shared contribution domain makes Bar lengths directly comparable
+    // with current-case marker distances from zero in Scatter.
+    const maxScatter = contributionDomain(model, result);
+    const center = left + axisWidth / 2; const scatterX = (value) => center + clamp(value / maxScatter, -1, 1) * (axisWidth / 2 - 16);
     add("rect", { x: 0, y: 0, width, height, rx: 7, fill: "#fbfdfc" });
     text(18, 26, t("featureLabel"), { fill: "#315864", "font-size": 10, "font-weight": "800", "letter-spacing": "1" }); text(left, 26, t("scatterAxis"), { fill: "#315864", "font-size": 10, "font-weight": "800" });
-    line(center, 39, center, height - 39, { stroke: "#8fa4aa", "stroke-width": 1.5 });
+    add("rect", { x: left, y: 39, width: axisWidth / 2, height: height - 76, fill: "#eff8f3", opacity: .62 });
+    add("rect", { x: center, y: 39, width: axisWidth / 2, height: height - 76, fill: "#fff1ef", opacity: .62 });
+    line(center, 39, center, height - 39, { stroke: "#607f86", "stroke-width": 1.8 });
+    text(left + 7, 50, "−", { fill: INFLUENCE_COLORS.negative, "font-size": 13, "font-weight": "850" });
+    text(width - right - 7, 50, "+", { "text-anchor": "end", fill: INFLUENCE_COLORS.positive, "font-size": 13, "font-weight": "850" });
     [-1, -.5, 0, .5, 1].forEach((ratio) => { const x = scatterX(ratio * maxScatter); line(x, height - 37, x, height - 30, { stroke: "#718b93" }); text(x, height - 17, formatNumber(ratio * maxScatter, 2), { "text-anchor": "middle", fill: "#738990", "font-size": 8 }); });
     line(left, height - 37, width - right, height - 37, { stroke: "#9aafb3", "stroke-width": 1.2 });
     sorted.forEach(({ field, contribution }, index) => {
-      const y = top + index * rowHeight; const range = { min: field.plotMin ?? field.min, max: field.plotMax ?? field.max }; const mid = (range.min + range.max) / 2;
+      const y = top + index * rowHeight; const range = { min: field.plotMin ?? field.min, max: field.plotMax ?? field.max };
       text(18, y + 4, fieldLabel(field), { fill: "#294d5a", "font-size": 11, "font-weight": "700" }); text(18, y + 20, field.symbol, { fill: "#9aabb0", "font-size": 9 }); line(left, y, width - right, y, { stroke: "#d9e4e3", "stroke-dasharray": "2 7" });
-      const count = field.type === "select" ? 2 : 25; for (let j = 0; j < count; j += 1) { const value = field.type === "select" ? (j === 0 ? 0 : 1) : range.min + (range.max - range.min) * j / (count - 1); const delta = field.beta * (value - mid); const jitter = Math.sin((j + 1) * (index + 2) * 1.37) * 10; add("circle", { cx: scatterX(delta), cy: y + jitter, r: field.type === "select" ? 5.4 : 3.8, fill: interpolateColor((value - range.min) / (range.max - range.min || 1)), opacity: .9 }); }
-      const currentDelta = contribution - field.beta * mid; const currentX = scatterX(currentDelta); line(currentX, y - 16, currentX, y + 16, { stroke: "#13a39e", "stroke-width": 2 }); add("circle", { cx: currentX, cy: y, r: 5, fill: "#fff", stroke: "#13a39e", "stroke-width": 2.2 });
+      const count = field.type === "select" ? 2 : 25;
+      for (let j = 0; j < count; j += 1) {
+        const value = field.type === "select" ? (j === 0 ? 0 : 1) : range.min + (range.max - range.min) * j / (count - 1);
+        const contributionValue = termContribution(field, value);
+        const jitter = Math.sin((j + 1) * (index + 2) * 1.37) * 10;
+        const signColor = contributionColor(contributionValue);
+        // Use the same sign colour for fill and outline so positive and
+        // negative contributions remain unambiguous. Zero is neutral.
+        const signStroke = contributionStroke(contributionValue);
+        add("circle", { cx: scatterX(contributionValue), cy: y + jitter, r: field.type === "select" ? 5.4 : 3.8, fill: signColor, stroke: signStroke, "stroke-width": 0.8, opacity: .9, "data-feature": field.key, "data-contribution": contributionValue.toPrecision(17), "data-sign": contributionSign(contributionValue) });
+      }
+      // The current-case marker is plotted at the exact contribution used by
+      // the Bar view, so its signed magnitude is directly comparable.
+      const currentX = scatterX(contribution);
+      const currentColor = contributionColor(contribution);
+      const markerData = { "data-feature": field.key, "data-contribution": contribution.toPrecision(17), "data-sign": contributionSign(contribution), "data-current": "true" };
+      line(currentX, y - 16, currentX, y + 16, { stroke: currentColor, "stroke-width": 2.2, ...markerData });
+      // Signed fill matches Bar; the teal outline preserves the current-case
+      // encoding shown in the legend.
+      add("circle", { cx: currentX, cy: y, r: 6, fill: currentColor, stroke: "#13a39e", "stroke-width": 2.2, ...markerData });
+      add("circle", { cx: currentX, cy: y, r: 2, fill: "#fff", ...markerData });
+      text(currentX, y + 27, contributionLabel(contribution), { "text-anchor": "middle", fill: currentColor, "font-size": 8, "font-weight": "800" });
     });
-    text(left, 48, t("lowValue"), { fill: "#268bd8", "font-size": 9 }); text(left + 28, 48, "→", { fill: "#8aa0a6", "font-size": 9 }); text(width - right, 48, t("highValue"), { "text-anchor": "end", fill: "#e85967", "font-size": 9 });
     text(left, height - 2, t("negativeCaption"), { fill: "#8aa0a6", "font-size": 9 }); text(width - right, height - 2, t("positiveCaption"), { "text-anchor": "end", fill: "#8aa0a6", "font-size": 9 });
   }
 

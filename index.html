@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#063f43" />
     <meta name="description" content="ShenYan AI offline renal risk assessment workbench for IgAN logistic-regression models." />
     <title>ShenYan AI · IgAN Risk Assessment</title>
-    <link rel="stylesheet" href="styles.css?v=20260830-2" />
+    <link rel="stylesheet" href="styles.css?v=20260902-density-contribution-4" />
   </head>
   <body>
     <div class="app-shell">
@@ -75,7 +75,7 @@
 
           <section class="panel nomogram-panel"><div class="panel-header nomogram-header"><div><div class="section-kicker" id="nomogramKicker">04 / NOMOGRAM</div><h2 id="nomogramTitle">Risk nomogram</h2><p id="nomogramIntro">Variable scales use observed modeling-data ranges; total points and probability share one linear-predictor mapping.</p></div><div class="nomogram-legend"><span class="legend-dot teal"></span><span id="legendCurrent">Current value</span><span class="legend-dot coral"></span><span id="legendThreshold">Risk threshold</span></div></div><div class="nomogram-scroll"><svg id="nomogram" role="img" aria-label="Risk nomogram"></svg></div><div class="nomogram-tier-key" id="nomogramTierKey" aria-label="Risk tiers"></div><div class="nomogram-source" id="nomogramSource">Variable scales use observed modeling-data ranges.</div></section>
 
-          <section class="panel explanation-panel"><div class="panel-header explanation-header"><div><div class="section-kicker" id="explanationKicker">05 / EXPLANATION</div><h2 id="explanationTitle">Variable contribution &amp; distribution</h2><p id="explanationIntro">Bar and Scatter are shown separately, with the same feature order as the reference plots.</p></div><div class="explanation-legend"><span class="legend-dot teal"></span><span id="legendCase">Current case</span><span class="legend-dot blue"></span><span id="legendLow">Low value</span><span class="legend-dot coral"></span><span id="legendHigh">High value</span></div></div><div class="chart-block"><div class="chart-block-header"><h3 id="barPlotTitle">Bar · Current case contribution</h3></div><div class="explanation-scroll"><svg id="barPlot" role="img" aria-label="Variable contribution bar chart"></svg></div></div><div class="chart-block"><div class="chart-block-header"><h3 id="scatterPlotTitle">Scatter · Contribution distribution</h3><span id="scatterPlotNote">Linear contribution</span></div><div class="explanation-scroll"><svg id="scatterPlot" role="img" aria-label="Variable contribution scatter chart"></svg></div></div></section>
+          <section class="panel explanation-panel"><div class="panel-header explanation-header"><div><div class="section-kicker" id="explanationKicker">05 / EXPLANATION</div><h2 id="explanationTitle">Variable contribution &amp; distribution</h2><p id="explanationIntro">Bar and Scatter are shown separately, with the same feature order as the reference plots.</p></div><div class="explanation-legend"><span class="legend-dot teal"></span><span id="legendCase">Current case</span><span class="legend-dot negative"></span><span id="legendLow">Negative contribution</span><span class="legend-dot positive"></span><span id="legendHigh">Positive contribution</span></div></div><div class="chart-block"><div class="chart-block-header"><h3 id="barPlotTitle">Bar · Current case contribution</h3></div><div class="explanation-scroll"><svg id="barPlot" role="img" aria-label="Variable contribution bar chart"></svg></div></div><div class="chart-block"><div class="chart-block-header"><h3 id="scatterPlotTitle">Scatter · Contribution distribution</h3><span id="scatterPlotNote">Linear contribution</span></div><div class="explanation-scroll"><svg id="scatterPlot" role="img" aria-label="Variable contribution scatter chart"></svg></div></div></section>
 
           <section class="panel model-info-panel"><div class="panel-header compact"><div><div class="section-kicker" id="modelInfoKicker">06 / MODEL NOTE</div><h2 id="modelInfoTitle">Model notes &amp; boundaries</h2></div></div><div class="model-info-content" id="modelInfoContent"></div></section>
 
@@ -84,6 +84,6 @@
         </main>
       </div>
     </div>
-    <script src="app.js?v=20260830-4"></script>
+    <script src="app.js?v=20260902-density-contribution-6"></script>
   </body>
 </html>
